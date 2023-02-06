@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { World } from '../_model/world';
 import { Observable } from 'rxjs';
-import { environment } from '../environment/environment';
+import { environment } from './../../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -15,8 +15,8 @@ export class WorldService {
   private worldsUrl: string;
 
   constructor(private http: HttpClient) {
-    this.worldsUrl = environment.API_BASE + '/world';
-    this.worldsPublicUrl = environment.API_BASE + '/world/public';
+    this.worldsUrl = environment.apiUrl + '/world';
+    this.worldsPublicUrl = environment.apiUrl + '/world/public';
   }
 
   public findAll(): Observable<World[]> {

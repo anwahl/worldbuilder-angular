@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../_model/user';
 import { Observable } from 'rxjs';
-import { environment } from '../environment/environment';
+import { environment } from './../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -18,9 +18,9 @@ export class UserService {
   
 
   constructor(private http: HttpClient) {
-    this.usersUrl = environment.API_BASE + '/users';
-    this.signupUrl = environment.API_BASE + '/auth/signup';
-    this.signinUrl = environment.API_BASE + '/auth/signin';
+    this.usersUrl = environment.apiUrl + '/users';
+    this.signupUrl = environment.apiUrl + '/auth/signup';
+    this.signinUrl = environment.apiUrl + '/auth/signin';
   }
 
   public findAll(): Observable<User[]> {
