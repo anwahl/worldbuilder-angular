@@ -10,6 +10,8 @@ import { World } from '../_model/world';
 })
 export class WorldFormComponent {
 
+  errorMessage = '';
+  submitFailed = false;
   world: World;
 
   constructor(
@@ -20,7 +22,12 @@ export class WorldFormComponent {
   }
 
   onSubmit() {
-    this.worldService.create(this.world).subscribe(result => this.gotoWorldList());
+    this.worldService.create(this.world).subscribe({
+      next: result => { this.gotoWorldList() },
+      error: err => {
+        this.errorMessage = err.error.title + "; " + err.error.detail;
+        this.submitFailed = true;
+      }});
   }
 
   gotoWorldList() {

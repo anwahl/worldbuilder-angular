@@ -1,6 +1,6 @@
 <div class="card my-5">
     <div class="card-body">
-      <form (ngSubmit)="onSubmit()" #worldForm="ngForm">
+      <form (ngSubmit)="onSubmit()" #worldForm="ngForm" #f="ngForm">
         <div class="form-group">
           <label for="name">Name</label>
           <input type="text" [(ngModel)]="world.name" 
@@ -32,6 +32,9 @@
         </div>
         <button type="submit" [disabled]="!worldForm.form.valid" 
           class="btn btn-info">Submit</button>
-      </form>
+          <div class="alert alert-warning" *ngIf="f.submitted && submitFailed">
+            Submit failed!<br />{{ errorMessage }}
+          </div>
+        </form>
     </div>
   </div>
