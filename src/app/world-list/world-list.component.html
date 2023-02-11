@@ -1,22 +1,37 @@
 <div class="card my-5">
+    <button (click)="viewPublicWorlds()"  *ngIf="isLoggedIn && userWorlds" type="button" class="btn btn-primary">All Public Worlds</button>
+    <button (click)="viewUserWorlds()" *ngIf="isLoggedIn && publicWorlds" type="button" class="btn btn-primary">User Worlds</button>
     <div class="card-body">
       <table class="table table-bordered table-striped">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">User</th>
+            <th *ngIf="isLoggedIn && userWorlds" scope="col" width="1em">Edit</th>
+            <th *ngIf="!isLoggedIn || !userWorlds" scope="col">View</th>
+            <th *ngIf="!isLoggedIn || !userWorlds" scope="col">User</th>
             <th scope="col">Name</th>
             <th scope="col">Description</th>
+            <th *ngIf="isLoggedIn && userWorlds" scope="col" width="1em">Public</th>
+            <th *ngIf="isLoggedIn && userWorlds" scope="col" width="1em">Delete</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let world of worlds">
-            <td>{{ world.id }}</td>
-            <td>{{ world.user.username }}</td>
+            <td *ngIf="isLoggedIn && userWorlds"><a [routerLink]="['/world', world.id]" ><i class="bi bi-pencil-square"></i></a></td>
+            <td *ngIf="!isLoggedIn || !userWorlds"><i class="bi bi-eye"></i></td>
+            <td *ngIf="!isLoggedIn || !userWorlds">{{ world.user.username }}</td>
             <td>{{ world.name }}</td>
             <td>{{ world.description }}</td>
+            <td *ngIf="isLoggedIn && userWorlds">{{ world.isPrivate ? 'No' : 'Yes' }}</td>
+            <td *ngIf="isLoggedIn && userWorlds">
+                <button (click)="deleteWorld(world)" type="button" class="close" aria-label="Delete">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
+  <ngx-loading
+    [show]="loading"
+  ></ngx-loading>

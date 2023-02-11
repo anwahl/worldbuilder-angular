@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'worlds', component: WorldListComponent },
   { path: 'world', component: WorldFormComponent },
+  { path: 'world/:id', component: WorldFormComponent },
   { path: 'register', component: RegisterComponent },
 ];
 

@@ -14,6 +14,10 @@ import { httpInterceptorProviders } from './_helpers/http.interceptor';
 import { RegisterComponent } from './register/register.component';
 import { StorageService } from './_service/storage.service';
 import { AuthService } from './_service/auth.service';
+import { NgxLoadingModule } from 'ngx-loading';
+import { Validation } from './_helpers/validation';
+import { PasswordPatternDirective } from './_directives/password-pattern.directive';
+import { MatchPasswordDirective } from './_directives/match-password.directive';
 
 @NgModule({
   declarations: [
@@ -22,15 +26,18 @@ import { AuthService } from './_service/auth.service';
     UserListComponent,
     WorldFormComponent,
     WorldListComponent,
-    RegisterComponent
+    RegisterComponent,
+    PasswordPatternDirective,
+    MatchPasswordDirective
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    NgxLoadingModule.forRoot({})
   ],
-  providers: [httpInterceptorProviders, UserService, WorldService],
+  providers: [httpInterceptorProviders, Validation, UserService, WorldService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

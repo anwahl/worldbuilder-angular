@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   isLoginFailed = false;
   errorMessage = '';
   roles: string[] = [];
+  public loading = false;
 
   constructor(private authService: AuthService, private storageService: StorageService) { }
 
@@ -27,10 +28,12 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.loading = true;
     const { username, password } = this.form;
 
     this.authService.login(username, password).subscribe({
       next: data => {
+        this.loading = false;
         this.storageService.saveUser(data);
 
         this.isLoginFailed = false;
@@ -39,6 +42,7 @@ export class LoginComponent implements OnInit {
         this.reloadPage();
       },
       error: err => {
+        this.loading = false;
         this.errorMessage = err.message;
         this.isLoginFailed = true;
       }

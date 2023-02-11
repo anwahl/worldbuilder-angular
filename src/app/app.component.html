@@ -5,12 +5,11 @@
         <div class="card-body">
           <h2 class="card-title text-center text-white py-3">{{ title }}</h2>
           <ul class="text-center list-inline py-3">
-            
             <li *ngIf="isLoggedIn" class="list-inline-item">
               <a routerLink="/world" class="btn btn-info">Create World</a>
                 </li>
             <li class="list-inline-item">
-              <a routerLink="/worlds" class="btn btn-info">Public Worlds</a>
+              <a routerLink="/worlds" class="btn btn-info">Worlds</a>
                 </li>
             <li class="list-inline-item">
               <a *ngIf="!isLoggedIn" routerLink="/login" class="btn btn-info">Login</a>

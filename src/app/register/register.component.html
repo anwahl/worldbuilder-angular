@@ -3,10 +3,10 @@
       <form
         *ngIf="!isSuccessful"
         name="form"
-        (ngSubmit)="f.form.valid && onSubmit()"
         #f="ngForm"
+        (ngSubmit)="f.form.valid && onSubmit()"
         novalidate
-      >
+        [appMatchPassword]="['password', 'confirmPassword']">
         <div class="form-group">
           <label for="username">Username</label>
           <input
@@ -69,7 +69,24 @@
           </div>
         </div>
         <div class="form-group">
-          <button class="btn btn-primary btn-block">Sign Up</button>
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              class="form-control"
+              name="confirmPassword"
+              [(ngModel)]="user.confirmPassword"
+              required
+              minlength="6"
+              #confirmPassword="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && confirmPassword.errors }"
+            />
+            <div class="invalid-feedback" *ngIf="confirmPassword.errors && f.submitted">
+              <div *ngIf="confirmPassword.errors['required']">Confirm Password is required</div>
+              <div *ngIf="confirmPassword.errors['matching']">Passwords do not match</div>
+            </div>
+          </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
         </div>
   
         <div class="alert alert-warning" *ngIf="f.submitted && isSignUpFailed">
@@ -82,3 +99,6 @@
       </div>
     </div>
   </div>
+  <ngx-loading
+    [show]="loading"
+  ></ngx-loading>
