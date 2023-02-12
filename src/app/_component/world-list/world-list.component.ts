@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { World } from '../_model/world';
-import { WorldService } from '../_service/world.service';
-import { StorageService } from '../_service/storage.service';
-import { User } from '../_model/user';
+import { World } from '../../_model/world';
+import { WorldService } from '../../_service/world.service';
+import { StorageService } from '../../_service/storage.service';
+import { User } from '../../_model/user';
+import { ModalService } from '../../_modal';
+import { AlertService } from '../../_alert';
+
 
 @Component({
   selector: 'app-world-list',
@@ -18,9 +21,11 @@ export class WorldListComponent implements OnInit {
   storageServer: StorageService;
   user: User;
   public loading = false;
-
+  worldToDelete: World;
   constructor(private worldService: WorldService,
-      private storageService: StorageService) {
+      private storageService: StorageService,
+      private modalService: ModalService,
+      private alertService: AlertService) {
         this.loading = true;
   }
 
@@ -63,13 +68,26 @@ export class WorldListComponent implements OnInit {
       this.publicWorlds = false;
     });
   }
-  
+
+  deleteConfirm(world: World) {
+    this.worldToDelete = world;
+    this.modalService.open('deleteWorldConfirm');
+  }
+
+  closeModal() {
+    this.modalService.close();
+  }
+
   deleteWorld(world: World) {
-    this.loading = true;
+   this.closeModal()
+   this.loading = true;
     this.worldService.delete(world)
         .subscribe(response => {
+          this.alertService.success('World ' + world.name + ' was successfully deleted.');
           this.loading = false;
           this.worlds = this.worlds.filter(item => item.id !== world.id);
-        }, err => { console.log(err); });
+        }, err => { 
+          this.alertService.error('World ' + world.name + ' could not deleted. Reason: ' + err);
+        });
   }
 }

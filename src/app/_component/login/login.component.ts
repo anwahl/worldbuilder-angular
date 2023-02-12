@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../_service/auth.service';
-import { StorageService } from '../_service/storage.service';
+import { AlertService } from 'src/app/_alert';
+import { AuthService } from '../../_service/auth.service';
+import { StorageService } from '../../_service/storage.service';
 
 @Component({
   selector: 'app-login',
@@ -13,17 +14,16 @@ export class LoginComponent implements OnInit {
     password: null
   };
   isLoggedIn = false;
-  isLoginFailed = false;
   errorMessage = '';
-  roles: string[] = [];
   public loading = false;
+  username: string = '';
 
-  constructor(private authService: AuthService, private storageService: StorageService) { }
+  constructor(private authService: AuthService, private storageService: StorageService, private alertService: AlertService) { }
 
   ngOnInit(): void {
     if (this.storageService.isLoggedIn()) {
       this.isLoggedIn = true;
-      this.roles = this.storageService.getUser().roles;
+      this.username = this.storageService.getUser().username;
     }
   }
 
@@ -35,16 +35,13 @@ export class LoginComponent implements OnInit {
       next: data => {
         this.loading = false;
         this.storageService.saveUser(data);
-
-        this.isLoginFailed = false;
         this.isLoggedIn = true;
-        this.roles = this.storageService.getUser().roles;
+        this.username = this.storageService.getUser().username;
         this.reloadPage();
       },
       error: err => {
         this.loading = false;
-        this.errorMessage = err.message;
-        this.isLoginFailed = true;
+        this.alertService.error("Error logging in: " + err.message);
       }
     });
   }

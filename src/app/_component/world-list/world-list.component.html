@@ -5,8 +5,9 @@
       <table class="table table-bordered table-striped">
         <thead class="thead-dark">
           <tr>
-            <th *ngIf="isLoggedIn && userWorlds" scope="col" width="1em">Edit</th>
-            <th *ngIf="!isLoggedIn || !userWorlds" scope="col">View</th>
+            <th *ngIf="isLoggedIn && userWorlds" scope="col" width="1em"></th>
+            <th *ngIf="isLoggedIn && userWorlds" scope="col" width="1em"></th>
+            <th *ngIf="!isLoggedIn || !userWorlds" scope="col" width="1em">View</th>
             <th *ngIf="!isLoggedIn || !userWorlds" scope="col">User</th>
             <th scope="col">Name</th>
             <th scope="col">Description</th>
@@ -17,14 +18,15 @@
         <tbody>
           <tr *ngFor="let world of worlds">
             <td *ngIf="isLoggedIn && userWorlds"><a [routerLink]="['/world', world.id]" ><i class="bi bi-pencil-square"></i></a></td>
+            <td *ngIf="isLoggedIn && userWorlds"><a [routerLink]="['/world/manage', world.id]" ><i class="bi bi-body-text"></i></a></td>
             <td *ngIf="!isLoggedIn || !userWorlds"><i class="bi bi-eye"></i></td>
             <td *ngIf="!isLoggedIn || !userWorlds">{{ world.user.username }}</td>
             <td>{{ world.name }}</td>
             <td>{{ world.description }}</td>
             <td *ngIf="isLoggedIn && userWorlds">{{ world.isPrivate ? 'No' : 'Yes' }}</td>
             <td *ngIf="isLoggedIn && userWorlds">
-                <button (click)="deleteWorld(world)" type="button" class="close" aria-label="Delete">
-                    <span aria-hidden="true">&times;</span>
+                <button (click)="deleteConfirm(world)"  type="button" aria-label="Delete">
+                    <i class="bi bi-x"></i>
                 </button>
             </td>
           </tr>
@@ -32,6 +34,12 @@
       </table>
     </div>
   </div>
+  <wb-modal id="deleteWorldConfirm">
+    <h1>Are you Sure?</h1>
+    <p>Do you wish to delete this world?</p>
+    <button (click)="deleteWorld(worldToDelete)">Delete</button>
+    <button (click)="closeModal();">Close</button>
+  </wb-modal>
   <ngx-loading
     [show]="loading"
   ></ngx-loading>

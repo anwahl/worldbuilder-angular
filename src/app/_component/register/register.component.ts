@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../_model/user';
-import { AuthService } from '../_service/auth.service';
+import { AlertService } from 'src/app/_alert';
+import { User } from '../../_model/user';
+import { AuthService } from '../../_service/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -10,11 +11,9 @@ import { AuthService } from '../_service/auth.service';
 export class RegisterComponent implements OnInit {
   user: User;
   isSuccessful = false;
-  isSignUpFailed = false;
-  errorMessage = '';
   public loading = false;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private alertService: AlertService) {
     this.user = new User(); 
   }
 
@@ -26,14 +25,12 @@ export class RegisterComponent implements OnInit {
     this.authService.register(this.user).subscribe({
       next: data => {
         this.loading = false;
-        console.log(data);
         this.isSuccessful = true;
-        this.isSignUpFailed = false;
+        this.alertService.success(this.user.username + " was registered successfully!");
       },
       error: err => {
         this.loading = false;
-        this.errorMessage = err.message;
-        this.isSignUpFailed = true;
+        this.alertService.error("Error with registration: " + err.message);
       }
     });
   }

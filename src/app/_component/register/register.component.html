@@ -6,7 +6,8 @@
         #f="ngForm"
         (ngSubmit)="f.form.valid && onSubmit()"
         novalidate
-        [appMatchPassword]="['password', 'confirmPassword']">
+        [appMatchPassword]="['password', 'confirmPassword']"
+        [appMatchEmail]="['email', 'confirmEmail']">
         <div class="form-group">
           <label for="username">Username</label>
           <input
@@ -50,6 +51,26 @@
           </div>
         </div>
         <div class="form-group">
+          <label for="confirmEmail">Confirm Email</label>
+          <input
+              type="email"
+              class="form-control"
+              name="confirmEmail"
+              [(ngModel)]="user.confirmEmail"
+              required
+              email
+              #confirmEmail="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && confirmEmail.errors }"
+          />
+          <div class="invalid-feedback" *ngIf="confirmEmail.errors && f.submitted">
+              <div *ngIf="confirmEmail.errors['required']">Confirm Email is required</div>
+              <div *ngIf="confirmEmail.errors['email']">
+              Email must be a valid email address
+              </div>
+              <div *ngIf="confirmEmail.errors['matching']">Confirm Email does not match</div>
+          </div>
+      </div>
+        <div class="form-group">
           <label for="password">Password</label>
           <input
             type="password"
@@ -88,15 +109,7 @@
         <div class="form-group">
           <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
         </div>
-  
-        <div class="alert alert-warning" *ngIf="f.submitted && isSignUpFailed">
-          Signup failed!<br />{{ errorMessage }}
-        </div>
       </form>
-  
-      <div class="alert alert-success" *ngIf="isSuccessful">
-        Your registration is successful!
-      </div>
     </div>
   </div>
   <ngx-loading

@@ -17,12 +17,16 @@
             <li *ngIf="!isLoggedIn" class="list-inline-item">
               <a routerLink="/register" class="btn btn-info">Register</a>
                 </li>
+          <li *ngIf="isLoggedIn" class="list-inline-item">
+            <a routerLink="/profile" class="btn btn-info">Profile</a>
+          </li>
            <li *ngIf="isLoggedIn" class="list-inline-item">
               <a href class="nav-link" class="btn btn-info" (click)="this.logout()">LogOut</a>
             </li>
           </ul>
         </div>
       </div>
+      <alert></alert>
       <router-outlet></router-outlet>
     </div>
   </div>
