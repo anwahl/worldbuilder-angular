@@ -4,10 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from './../../environments/environment';
 import { User } from '../_model/user';
 import { Profile } from '../_model/profile';
-
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
+import { postOptions, putOptions } from '../_model/http-options';
 
 @Injectable({
   providedIn: 'root',
@@ -22,19 +19,19 @@ export class AuthService {
         username,
         password,
       },
-      httpOptions
+      postOptions
     );
   }
 
   register(user: User): Observable<any> {
-    return this.http.post(environment.apiUrl + '/auth/signup', user, httpOptions);
+    return this.http.post(environment.apiUrl + '/auth/signup', user, postOptions);
   }
 
   changePassword(profile: Profile,): Observable<any> {
-    return this.http.put(environment.apiUrl + '/auth/changePassword/' + profile.userId, profile, httpOptions);
+    return this.http.put(environment.apiUrl + '/auth/changePassword/' + profile.userId, profile, putOptions);
   }
 
   logout(): Observable<any> {
-    return this.http.post(environment.apiUrl + '/auth/signout', { });
+    return this.http.post(environment.apiUrl + '/auth/signout', postOptions);
   }
 }
