@@ -27,11 +27,19 @@ export class AuthService {
     return this.http.post(environment.apiUrl + '/auth/signup', user, postOptions);
   }
 
-  changePassword(profile: Profile,): Observable<any> {
+  changePassword(profile: Profile): Observable<any> {
     return this.http.put(environment.apiUrl + '/auth/changePassword/' + profile.userId, profile, putOptions);
   }
 
   logout(): Observable<any> {
     return this.http.post(environment.apiUrl + '/auth/signout', postOptions);
+  }
+
+  resetPassword(email: String): Observable<any> {
+    return this.http.post(environment.apiUrl + '/auth/resetPassword/' + email, postOptions);
+  }
+
+  savePassword(token:String, profile: Profile): Observable<any> {
+    return this.http.post(environment.apiUrl + '/auth/savePassword/' + token, profile, postOptions);
   }
 }

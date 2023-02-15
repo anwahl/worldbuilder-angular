@@ -41,7 +41,7 @@ export class UserProfileComponent {
       },
       error: err => {
         this.loading = false;
-        this.alertService.error("Email could not be changed: " + err.message);
+        this.alertService.error("Email could not be changed: " + err.error.message);
       }
     });
   }
@@ -56,7 +56,7 @@ export class UserProfileComponent {
       },
       error: err => {
         this.loading = false;
-        this.alertService.error("Password could not be changed: " + err.message);
+        this.alertService.error("Password could not be changed: " + err.error.message);
       }
     });
   }
@@ -75,7 +75,7 @@ export class UserProfileComponent {
       },
       error: err => {
         this.loading = false;
-        this.alertService.error("User cannot be deleted: " + err.message);
+        this.alertService.error("User cannot be deleted: " + err.error.message);
       }
     });
   }

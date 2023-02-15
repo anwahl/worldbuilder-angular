@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
       },
       error: err => {
         this.loading = false;
-        this.alertService.error("Error with registration: " + err.message);
+        this.alertService.error("Error with registration: " + err.error.message);
       }
     });
   }

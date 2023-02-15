@@ -7,6 +7,7 @@ import { WorldFormComponent } from './_component/world-form/world-form.component
 import { WorldMangementComponent } from './_component/world-mangement/world-mangement.component';
 import { RegisterComponent } from './_component/register/register.component';
 import { UserProfileComponent } from './_component/user-profile/user-profile.component';
+import { ForgotPasswordComponent } from './_component/forgot-password/forgot-password.component';
 
 const routes: Routes = [
   { path: 'users', component: UserListComponent },
@@ -17,6 +18,8 @@ const routes: Routes = [
   { path: 'world/manage/:id', component: WorldMangementComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: UserProfileComponent },
+  { path: 'resetPassword', component: ForgotPasswordComponent },
+  { path: 'resetPassword/:token', component: ForgotPasswordComponent },
 ];
 
 @NgModule({

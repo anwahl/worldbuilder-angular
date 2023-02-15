@@ -22,6 +22,7 @@ import { AlertModule } from './_alert';
 import { ModalComponent } from './_modal/component/modal.component';
 import { ModalService } from './_modal';
 import { UserProfileComponent } from './_component/user-profile/user-profile.component';
+import { ForgotPasswordComponent } from './_component/forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { UserProfileComponent } from './_component/user-profile/user-profile.com
     MatchEmailDirective,
     WorldMangementComponent,
     ModalComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,
