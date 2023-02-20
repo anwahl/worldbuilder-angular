@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'src/app/_alert';
 import { ModalService } from 'src/app/_modal';
 import { World } from 'src/app/_model/world';
@@ -22,14 +24,18 @@ export class RaceListComponent {
   loading = false;
   raceToDelete: Race;
   worldId: string;
-  columnsToDisplay =["update","name","description","trait","delete"];
+  columnsToDisplay = ["update","name","description","trait","delete"];
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  content: String;
 
   constructor(private raceService: RaceService,
       private modalService: ModalService,
       private alertService: AlertService,
       private worldStorage: WorldStorageService,
       private route: ActivatedRoute,
-      private worldService: WorldService) {
+      private worldService: WorldService,
+      private router: Router) {
   }
 
   ngOnInit() {
@@ -42,6 +48,8 @@ export class RaceListComponent {
         this.loading = false;
         this.races = data;
         this.ds = new MatTableDataSource<Race>(this.races);
+        this.ds.sort = this.sort;
+        this.ds.paginator = this.paginator;
       });
     } else {
         this.worldService.findById(this.worldId).subscribe({next: data => {
@@ -50,6 +58,8 @@ export class RaceListComponent {
             this.loading = false;
             this.races = data;
             this.ds = new MatTableDataSource<Race>(this.races);
+            this.ds.sort = this.sort;
+            this.ds.paginator = this.paginator;
 
           });
         }, error: err => {
@@ -57,6 +67,15 @@ export class RaceListComponent {
         }});
     };
     
+  }
+
+  showContent(content: string) {
+    this.content = content;
+    this.modalService.open('showContent');
+  }
+
+  navigateToRace(race: Race){
+    this.router.navigate(['../race', race.id], { relativeTo: this.route });
   }
 
   deleteConfirm(race: Race) {

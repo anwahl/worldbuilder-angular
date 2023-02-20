@@ -4,7 +4,9 @@ import { NgxLoadingModule } from 'ngx-loading';
 import { AlertModule } from 'src/app/_alert';
 import { ModalComponent } from 'src/app/_modal/component/modal.component';
 import { PageNotFoundComponent } from 'src/app/_component/page-not-found/page-not-found.component';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 
@@ -17,14 +19,18 @@ import {MatTableModule} from '@angular/material/table';
     CommonModule,
     NgxLoadingModule,
     AlertModule,
-    MatTableModule
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule
   ],
   exports: [
     ModalComponent,
     NgxLoadingModule,
     AlertModule,
     PageNotFoundComponent,
-    MatTableModule
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule
   ],
 })
 export class WelcomeModule { }

@@ -12,3 +12,80 @@ app-world-management {
     padding-left: calc(var(--bs-gutter-x) * -.5) !important;
     padding-right: calc(var(--bs-gutter-x) * -.5) !important;
 }
+
+
+  .mat-table .mat-row:nth-child(even) {background: #BBB !important}
+  .mat-table .mat-row:nth-child(odd) {background: #FFF !important}
+  
+mat-cell > span.ellipsis {
+    text-overflow: ellipsis; 
+    overflow: hidden; 
+    white-space: nowrap;
+ }
+ 
+@media(min-width: 750px) {  
+  .mat-column-update {
+    max-width: 54px;
+    border-right: 1px solid  #ddd;
+  }
+
+  .mat-column-delete {
+    max-width: 54px;
+    border-left: 1px solid  #ddd;
+  }
+}
+
+  mat-cell > span.ellipsis {
+    text-overflow: ellipsis; 
+    overflow: hidden; 
+    white-space: nowrap;
+ }
+
+  @media(max-width: 750px) {
+    mat-table {
+      border: 0 !important;
+      vertical-align: middle !important;
+    }
+  
+    mat-table mat-row {
+      border-bottom: 5px solid #ddd !important;
+      display: block !important;
+    }
+  
+    mat-table mat-row:nth-child(even) {
+      background: #ccc !important;
+    }
+    
+    mat-table mat-row:nth-child(odd) {
+      background: #fff !important;
+    }
+  
+    mat-table mat-cell {
+      border-bottom: 1px solid #ddd !important;
+      display: block !important;
+      font-size: 1em !important;
+      text-align: right !important;
+      font-weight: bold !important;
+      height: 30px !important;
+      margin-bottom: 4% !important;
+    }
+    
+    mat-table mat-cell:before {
+      content: attr(data-label) !important;
+      float: left !important;
+      text-transform: uppercase !important;
+      font-weight: normal !important;
+  
+      font-size: 0.85em !important;
+    }
+    
+    mat-table mat-cell:last-child {
+      border-bottom: 0 !important;
+    }
+    
+    mat-table mat-cell:first-child {
+      margin-top: 4% !important;
+    }
+
+    
+  }

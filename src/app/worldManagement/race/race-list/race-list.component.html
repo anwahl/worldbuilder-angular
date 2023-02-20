@@ -5,38 +5,50 @@
 <div class="card my-5">
     <div class="card-body">
       <a [routerLink]="['../race']" class="btn btn-info">Create Race</a><h4>Races</h4>
-      <table mat-table [dataSource]="ds">
+      
+<div class="list-table-container mat-elevation-z8">
+      <mat-table matSort [dataSource]="ds">
         <ng-container matColumnDef="update">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let race"><a [routerLink]="['../race', race.id]" ><i class="bi bi-pencil-square"></i></a></td>
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let race" data-label="update"><a [routerLink]="['../race', race.id]" ><i class="bi bi-pencil-square"></i></a></mat-cell>
         </ng-container>
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Name </th>
-          <td mat-cell *matCellDef="let race"> {{ race.name }} </td>
+          <mat-header-cell mat-sort-header *matHeaderCellDef> Name </mat-header-cell>
+          <mat-cell *matCellDef="let race" data-label="name">{{ race.name }} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="description">
-          <th mat-header-cell *matHeaderCellDef> Description </th>
-          <td mat-cell *matCellDef="let race"> {{ race.description }} </td>
+          <mat-header-cell mat-sort-header *matHeaderCellDef> Description </mat-header-cell>
+          <mat-cell *matCellDef="let race" data-label="description"><span (click)='showContent(race.description)' class="ellipsis">{{ race.description }}</span></mat-cell>
         </ng-container>
         <ng-container matColumnDef="trait">
-          <th mat-header-cell *matHeaderCellDef> Trait </th>
-          <td mat-cell *matCellDef="let race"> {{ race.trait }} </td>
+          <mat-header-cell mat-sort-header *matHeaderCellDef> Trait </mat-header-cell>
+          <mat-cell *matCellDef="let race" data-label="trait"><span (click)='showContent(race.trait)' class="ellipsis">{{ race.trait }}</span></mat-cell>
         </ng-container>
         <ng-container matColumnDef="delete">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let race"><button (click)="deleteConfirm(race)"  type="button" aria-label="Delete">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let race" data-label="delete"><button (click)="deleteConfirm(race)"  type="button" aria-label="Delete">
             <i class="bi bi-x"></i>
-        </button></td>
+        </button></mat-cell>
         </ng-container>
-        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
-      </table>
+        <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+        <mat-row *matRowDef="let race; columns: columnsToDisplay"></mat-row>
+      </mat-table>
+    </div>
+      <mat-paginator [length]="100"
+              [pageSize]="10"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              aria-label="Select page">
+      </mat-paginator>
     </div>
   </div>
   <wb-modal id="deleteRaceConfirm">
     <h1>Are you Sure?</h1>
     <p>Do you wish to delete this race?</p>
     <button (click)="deleteRace(raceToDelete)">Delete</button>
+    <button (click)="closeModal();">Close</button>
+  </wb-modal>
+  <wb-modal id="showContent">
+    <p>{{ content }}</p>
     <button (click)="closeModal();">Close</button>
   </wb-modal>
   <ngx-loading
