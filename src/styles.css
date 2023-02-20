@@ -2,6 +2,13 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-div.form-group > button.btn {
+div.form-group > button.btn, div.form-group > a > button.btn {
     margin: 5px;
+}
+.navbar-brand {
+    margin-left: 10px;
+}
+app-world-management {
+    padding-left: calc(var(--bs-gutter-x) * -.5) !important;
+    padding-right: calc(var(--bs-gutter-x) * -.5) !important;
 }

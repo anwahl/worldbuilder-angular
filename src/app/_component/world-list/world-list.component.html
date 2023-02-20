@@ -1,6 +1,7 @@
 <div class="card my-5">
     <button (click)="viewPublicWorlds()"  *ngIf="isLoggedIn && userWorlds" type="button" class="btn btn-primary">All Public Worlds</button>
     <button (click)="viewUserWorlds()" *ngIf="isLoggedIn && publicWorlds" type="button" class="btn btn-primary">User Worlds</button>
+    <h4>{{ userWorlds ? 'Your Worlds' : 'Public Worlds' }}</h4>
     <div class="card-body">
       <table class="table table-bordered table-striped">
         <thead class="thead-dark">

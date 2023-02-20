@@ -1,0 +1,38 @@
+<div class="card my-5">
+    <div class="card-body">
+      <a [routerLink]="['../race']" class="btn btn-info">Create Race</a><h4>Races</h4>
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th  scope="col" width="1em"></th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Trait</th>
+            <th scope="col" width="1em">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let race of races">
+            <td ><a [routerLink]="['../race', race.id]" ><i class="bi bi-pencil-square"></i></a></td>
+            <td>{{ race.name }}</td>
+            <td>{{ race.description }}</td>
+            <td>{{ race.trait }}</td>
+            <td>
+                <button (click)="deleteConfirm(race)"  type="button" aria-label="Delete">
+                    <i class="bi bi-x"></i>
+                </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <wb-modal id="deleteRaceConfirm">
+    <h1>Are you Sure?</h1>
+    <p>Do you wish to delete this race?</p>
+    <button (click)="deleteRace(raceToDelete)">Delete</button>
+    <button (click)="closeModal();">Close</button>
+  </wb-modal>
+  <ngx-loading
+    [show]="loading">
+  </ngx-loading>

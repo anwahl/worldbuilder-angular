@@ -3,8 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { World } from '../_model/world';
 import { Observable } from 'rxjs';
 import { environment } from './../../environments/environment';
-import { User } from '../_model/user';
 import { deleteOptions, getOptions, postOptions, putOptions } from '../_model/http-options';
+import { User } from '../_module/user-management/model/user';
 
 @Injectable()
 export class WorldService {

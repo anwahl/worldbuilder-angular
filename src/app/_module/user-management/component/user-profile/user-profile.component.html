@@ -1,0 +1,136 @@
+<div class="col-md-12">
+    <div class="card card-container">
+        <h4>User Profile</h4>
+        <div class="form-group">
+          <label for="username">Username:</label>
+          {{ profile.username }}
+        </div>
+        <form
+        name="form"
+        #f="ngForm"
+        (ngSubmit)="f.form.valid && onChangeEmail()"
+        novalidate
+        [appMatchEmail]="['newEmail', 'confirmEmail']">
+                    <div class="form-group">
+                        <label for="newEmail">Email:</label>
+                        {{ profile.email }}
+                    </div>
+                    <div class="form-group">
+                        <label for="email">New Email</label>
+                        <input
+                            type="email"
+                            class="form-control"
+                            name="newEmail"
+                            [(ngModel)]="profile.newEmail"
+                            required
+                            email
+                            #newEmail="ngModel"
+                            [ngClass]="{ 'is-invalid': f.submitted && newEmail.errors }"
+                        />
+                        <div class="invalid-feedback" *ngIf="newEmail.errors && f.submitted">
+                            <div *ngIf="newEmail.errors['required']">Email is required</div>
+                            <div *ngIf="newEmail.errors['email']">
+                            Email must be a valid email address
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmEmail">Confirm Email</label>
+                        <input
+                            type="email"
+                            class="form-control"
+                            name="confirmEmail"
+                            [(ngModel)]="profile.confirmEmail"
+                            required
+                            email
+                            #confirmEmail="ngModel"
+                            [ngClass]="{ 'is-invalid': f.submitted && confirmEmail.errors }"
+                        />
+                        <div class="invalid-feedback" *ngIf="confirmEmail.errors && f.submitted">
+                            <div *ngIf="confirmEmail.errors['required']">Confirm Email is required</div>
+                            <div *ngIf="confirmEmail.errors['email']">
+                            Email must be a valid email address
+                            </div>
+                            <div *ngIf="confirmEmail.errors['matching']">Confirm Email does not match</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">Change Email</button>
+                    </div>
+        </form>
+        <form
+        name="form"
+        #pw="ngForm"
+        (ngSubmit)="pw.form.valid && onChangePassword()"
+        novalidate
+        [appMatchPassword]="['newPassword', 'confirmPassword']">
+                <div class="form-group">
+                <label for="oldPassword">Old Password</label>
+                <input
+                    type="password"
+                    class="form-control"
+                    name="oldPassword"
+                    [(ngModel)]="profile.oldPassword"
+                    required
+                    minlength="6"
+                    #oldPassword="ngModel"
+                    [ngClass]="{ 'is-invalid': pw.submitted && oldPassword.errors }"
+                />
+                <div class="invalid-feedback" *ngIf="oldPassword.errors && pw.submitted">
+                    <div *ngIf="oldPassword.errors['required']">Password is required</div>
+                    <div *ngIf="oldPassword.errors['minlength']">
+                    Password must be at least 6 characters
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input
+                        type="password"
+                        class="form-control"
+                        name="newPassword"
+                        [(ngModel)]="profile.newPassword"
+                        required
+                        minlength="6"
+                        #newPassword="ngModel"
+                        [ngClass]="{ 'is-invalid': pw.submitted && newPassword.errors }"
+                    />
+                    <div class="invalid-feedback" *ngIf="newPassword.errors && pw.submitted">
+                        <div *ngIf="newPassword.errors['required']">Password is required</div>
+                        <div *ngIf="newPassword.errors['minlength']">
+                        Password must be at least 6 characters
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input
+                    type="password"
+                    class="form-control"
+                    name="confirmPassword"
+                    [(ngModel)]="profile.confirmPassword"
+                    required
+                    minlength="6"
+                    #confirmPassword="ngModel"
+                    [ngClass]="{ 'is-invalid': pw.submitted && confirmPassword.errors }"
+                    />
+                    <div class="invalid-feedback" *ngIf="confirmPassword.errors && pw.submitted">
+                    <div *ngIf="confirmPassword.errors['required']">Confirm Password is required</div>
+                    <div *ngIf="confirmPassword.errors['matching']">Passwords do not match</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">Change Password</button>
+                </div>
+  
+        </div></form>
+    </div>
+    <button type="submit" style="float: right; margin: 5px;" (click)="modalService.open('deleteUserConfirm')" class="btn btn-danger btn-block">Delete User</button>
+    <wb-modal id="deleteUserConfirm">
+        <h1>Are you Sure?</h1>
+        <p>Do you wish to delete your account?</p>
+        <button (click)="deleteUser(user)">Delete</button>
+        <button (click)="modalService.close()">Close</button>
+      </wb-modal>
+  <ngx-loading
+    [show]="loading"
+  ></ngx-loading>

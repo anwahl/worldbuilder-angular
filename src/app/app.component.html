@@ -1,33 +1,38 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
-      <div class="card bg-dark my-5">
-        <div class="card-body">
-          <h2 class="card-title text-center text-white py-3">{{ title }}</h2>
-          <ul class="text-center list-inline py-3">
-            <li *ngIf="isLoggedIn" class="list-inline-item">
-              <a routerLink="/world" class="btn btn-info">Create World</a>
-                </li>
-            <li class="list-inline-item">
-              <a routerLink="/worlds" class="btn btn-info">Worlds</a>
-                </li>
-            <li class="list-inline-item">
-              <a *ngIf="!isLoggedIn" routerLink="/login" class="btn btn-info">Login</a>
-                </li>
-            <li *ngIf="!isLoggedIn" class="list-inline-item">
-              <a routerLink="/register" class="btn btn-info">Register</a>
-                </li>
-          <li *ngIf="isLoggedIn" class="list-inline-item">
-            <a routerLink="/profile" class="btn btn-info">Profile</a>
-          </li>
-           <li *ngIf="isLoggedIn" class="list-inline-item">
-              <a href class="nav-link" class="btn btn-info" (click)="this.logout()">LogOut</a>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" [routerLink]="['./']" >{{ title }}</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav mr-auto" style="width: 100%; display: inline-block;">
+            <li class="nav-item dropdown" style="display: inline-block;">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Worlds
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a *ngIf="isLoggedIn" routerLink="/world" class="dropdown-item">Create World</a>
+                <a routerLink="/worlds" class="dropdown-item"> List Worlds</a>
+              </div>
+            </li>
+            <li class="nav-item dropdown" style="float: right; display: flex;">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ isLoggedIn ? 'User Management' : 'Login/Register' }}
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a *ngIf="!isLoggedIn" routerLink="/login" class="dropdown-item">Login</a>
+                <a *ngIf="!isLoggedIn" routerLink="/register" class="dropdown-item">Register</a>
+                <a *ngIf="isLoggedIn" routerLink="/profile" class="dropdown-item">Profile</a>
+                <div *ngIf="isLoggedIn" class="dropdown-divider"></div>
+                <a *ngIf="isLoggedIn" href class="nav-link" class="dropdown-item" (click)="this.logout()">LogOut</a>
+              </div>
             </li>
           </ul>
         </div>
-      </div>
+      </nav>
       <alert></alert>
       <router-outlet></router-outlet>
     </div>
   </div>
-</div>

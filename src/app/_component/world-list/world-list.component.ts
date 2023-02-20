@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { World } from '../../_model/world';
 import { WorldService } from '../../_service/world.service';
-import { StorageService } from '../../_service/storage.service';
-import { User } from '../../_model/user';
 import { ModalService } from '../../_modal';
 import { AlertService } from '../../_alert';
+import { StorageService } from 'src/app/_module/user-management/service/storage.service';
+import { User } from 'src/app/_module/user-management/model/user';
 
 
 @Component({
