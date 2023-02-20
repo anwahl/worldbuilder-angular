@@ -16,6 +16,7 @@ import { RouterModule } from '@angular/router';
 import { WelcomeModule } from './_module/welcome/welcome.module';
 import { UserManagementModule } from './_module/user-management/module/user-management.module';
 import { UserService } from './_module/user-management/service/user.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { UserService } from './_module/user-management/service/user.service';
     FormsModule,
     RouterModule,
     WelcomeModule,
-    UserManagementModule
+    UserManagementModule,
+    BrowserAnimationsModule
   ],
   providers: [httpInterceptorProviders, Validation, UserService, WorldService, ModalService, RaceService],
   bootstrap: [AppComponent]

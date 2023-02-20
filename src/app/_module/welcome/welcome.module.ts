@@ -4,7 +4,7 @@ import { NgxLoadingModule } from 'ngx-loading';
 import { AlertModule } from 'src/app/_alert';
 import { ModalComponent } from 'src/app/_modal/component/modal.component';
 import { PageNotFoundComponent } from 'src/app/_component/page-not-found/page-not-found.component';
-import { popper } from '@popperjs/core';
+import {MatTableModule} from '@angular/material/table';
 
 
 
@@ -17,12 +17,14 @@ import { popper } from '@popperjs/core';
     CommonModule,
     NgxLoadingModule,
     AlertModule,
+    MatTableModule
   ],
   exports: [
     ModalComponent,
     NgxLoadingModule,
     AlertModule,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    MatTableModule
   ],
 })
 export class WelcomeModule { }

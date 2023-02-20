@@ -56,6 +56,7 @@ export class RaceFormComponent {
       this.raceService.create(this.race).subscribe({
         next: result => { 
           this.loading = false;
+          this.alertService.success("Race saved successfully!");
           this.gotoRaceList() },
         error: err => {
           this.loading = false;
@@ -65,6 +66,7 @@ export class RaceFormComponent {
       this.raceService.update(this.race).subscribe({
         next: result => { 
           this.loading = false;
+          this.alertService.success("Race updated successfully!");
           this.gotoRaceList() },
         error: err => {
           this.loading = false;

@@ -33,10 +33,21 @@ export class WorldStorageService {
     }
   }
 
-  public isLoggedIn(): boolean {
+  public exists(): boolean {
     const world = window.sessionStorage.getItem(WORLD_KEY);
     if (world) {
       return true;
+    }
+
+    return false;
+  }
+
+  public existsById(id: String): boolean {
+    const world = window.sessionStorage.getItem(WORLD_KEY);
+    if(world) {
+      if (JSON.parse(world).id == id) {
+        return true;
+      }
     }
 
     return false;
