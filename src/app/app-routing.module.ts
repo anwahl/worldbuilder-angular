@@ -7,6 +7,8 @@ import { UserListComponent } from './_module/user-management/component/user-list
 import { LoginComponent } from './_module/user-management/component/login/login.component';
 import { RegisterComponent } from './_module/user-management/component/register/register.component';
 import { UserProfileComponent } from './_module/user-management/component/user-profile/user-profile.component';
+import { WelcomeComponent } from './_component/welcome/welcome.component';
+import { PageNotFoundComponent } from './_component/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   { path: 'users', component: UserListComponent },
@@ -18,7 +20,10 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: UserProfileComponent },
   { path: 'resetPassword', component: ForgotPasswordComponent },
-  { path: 'resetPassword/:token', component: ForgotPasswordComponent }
+  { path: 'welcome', component: WelcomeComponent },
+  { path: 'resetPassword/:token', component: ForgotPasswordComponent },
+  { path: '', redirectTo: 'welcome', pathMatch: 'full' },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({

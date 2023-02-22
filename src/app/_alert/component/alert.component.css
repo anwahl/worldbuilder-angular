@@ -1,0 +1,10 @@
+.wb-alert-container {
+    display: flex;
+    align-items: center;
+}
+.wb-alert-close {
+    margin-left: 10%;
+}
+.wb-alert-message {
+    width: 90%;
+}

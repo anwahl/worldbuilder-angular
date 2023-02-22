@@ -1,0 +1,15 @@
+@media(min-width: 750px) {  
+    .mat-column-manage {
+      max-width: 54px;
+      border-right: 1px solid  #ddd;
+    }
+
+    .mat-column-view {
+        max-width: 54px;
+        border-right: 1px solid  #ddd;
+      }
+}
+
+.view-worlds-btn {
+    float: right;
+}

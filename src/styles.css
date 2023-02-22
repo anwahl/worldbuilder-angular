@@ -1,21 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-div.form-group > button.btn, div.form-group > a > button.btn {
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: var(--bs-purple) !important;}
+div.form-group > button, div.form-group > a > button, mat-form-field > button, mat-form-field > a > button {
     margin: 5px;
+}
+mat-form-field {
+  margin: 5px;
 }
 .navbar-brand {
     margin-left: 10px;
 }
-app-world-management {
+
+mat-card {
+  background-color: var(--bs-yellow) !important;
+}
+
+.row>* {
     padding-left: calc(var(--bs-gutter-x) * -.5) !important;
     padding-right: calc(var(--bs-gutter-x) * -.5) !important;
 }
 
-
-  .mat-table .mat-row:nth-child(even) {background: #BBB !important}
-  .mat-table .mat-row:nth-child(odd) {background: #FFF !important}
+.mat-table .mat-row:nth-child(even) {background: #dddddd !important}
+.mat-table .mat-row:nth-child(odd) {background: #FFF !important}
   
 mat-cell > span.ellipsis {
     text-overflow: ellipsis; 
@@ -30,7 +37,7 @@ mat-cell > span.ellipsis {
   }
 
   .mat-column-delete {
-    max-width: 54px;
+    max-width: 75px;
     border-left: 1px solid  #ddd;
   }
 }

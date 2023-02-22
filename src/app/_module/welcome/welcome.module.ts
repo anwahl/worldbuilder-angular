@@ -7,6 +7,12 @@ import { PageNotFoundComponent } from 'src/app/_component/page-not-found/page-no
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
 
 
 
@@ -21,7 +27,13 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     AlertModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatCheckboxModule,
+    MatCardModule
   ],
   exports: [
     ModalComponent,
@@ -30,7 +42,13 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     PageNotFoundComponent,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatCheckboxModule,
+    MatCardModule
   ],
 })
 export class WelcomeModule { }

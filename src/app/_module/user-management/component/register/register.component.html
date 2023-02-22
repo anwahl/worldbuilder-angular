@@ -1,5 +1,5 @@
 <div class="col-md-12">
-    <div class="card card-container">
+    <mat-card>
       <h4>Register</h4>
       <form
         *ngIf="!isSuccessful"
@@ -107,12 +107,35 @@
               <div *ngIf="confirmPassword.errors['matching']">Passwords do not match</div>
             </div>
           </div>
+          <div [formGroup]="agreementForm">
+            <div class="form-group">
+              <mat-checkbox formControlName="privacy">Agree to <a (click)="modalService.open('showPrivacyPolicy')">Privacy Policy</a></mat-checkbox>
+              <div *ngIf="!agreementForm.valid &&  f.submitted " class="text-danger">
+                <span *ngIf="agreementForm.get('privacy')?.errors?.['required']">Privacy Policy Agreement is Required</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <mat-checkbox formControlName="terms">Agree to <a (click)="modalService.open('showTerms')">Terms Of Service</a></mat-checkbox>
+              <div *ngIf="!agreementForm.valid &&  f.submitted " class="text-danger">
+                <span *ngIf="agreementForm.get('terms')?.errors?.['required']">Terms of Service Agreement is Required</span>
+              </div>
+            </div>
+          </div>
+         
         <div class="form-group">
-          <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
-        </div>
+          <button type="submit" mat-raised-button color="accent">Sign Up</button>
+        </div> 
       </form>
-    </div>
+    </mat-card>
   </div>
+  <wb-modal id="showPrivacyPolicy">
+    <app-privacy-policy></app-privacy-policy>
+    <button (click)="modalService.close()">Close</button>
+  </wb-modal>
+  <wb-modal id="showTerms">
+    <app-terms-of-service></app-terms-of-service>
+    <button (click)="modalService.close()">Close</button>
+  </wb-modal>
   <ngx-loading
     [show]="loading"
   ></ngx-loading>

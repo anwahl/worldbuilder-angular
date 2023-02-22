@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { World } from 'src/app/_model/world';
 
 @Component({
   selector: 'app-world-home',

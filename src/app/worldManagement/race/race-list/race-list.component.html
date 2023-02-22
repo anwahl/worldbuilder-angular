@@ -1,16 +1,14 @@
+<mat-card>
+  <mat-card-content>
+    <a [routerLink]="['../race']" mat-raised-button color="accent">Create Race</a>
+    <mat-card-header><mat-card-title>Races</mat-card-title></mat-card-header>
 
-
-
-
-<div class="card my-5">
-    <div class="card-body">
-      <a [routerLink]="['../race']" class="btn btn-info">Create Race</a><h4>Races</h4>
-      
-<div class="list-table-container mat-elevation-z8">
+    <div class="list-table-container mat-elevation-z8">
       <mat-table matSort [dataSource]="ds">
         <ng-container matColumnDef="update">
           <mat-header-cell *matHeaderCellDef></mat-header-cell>
-          <mat-cell *matCellDef="let race" data-label="update"><a [routerLink]="['../race', race.id]" ><i class="bi bi-pencil-square"></i></a></mat-cell>
+          <mat-cell *matCellDef="let race" data-label="update"><a
+              [routerLink]="['../race', race.id]"><mat-icon>edit</mat-icon></a></mat-cell>
         </ng-container>
         <ng-container matColumnDef="name">
           <mat-header-cell mat-sort-header *matHeaderCellDef> Name </mat-header-cell>
@@ -18,29 +16,30 @@
         </ng-container>
         <ng-container matColumnDef="description">
           <mat-header-cell mat-sort-header *matHeaderCellDef> Description </mat-header-cell>
-          <mat-cell *matCellDef="let race" data-label="description"><span (click)='showContent(race.description)' class="ellipsis">{{ race.description }}</span></mat-cell>
+          <mat-cell *matCellDef="let race" data-label="description"><span (click)='showContent(race.description)'
+              class="ellipsis">{{ race.description }}</span></mat-cell>
         </ng-container>
         <ng-container matColumnDef="trait">
           <mat-header-cell mat-sort-header *matHeaderCellDef> Trait </mat-header-cell>
-          <mat-cell *matCellDef="let race" data-label="trait"><span (click)='showContent(race.trait)' class="ellipsis">{{ race.trait }}</span></mat-cell>
+          <mat-cell *matCellDef="let race" data-label="trait"><span (click)='showContent(race.trait)'
+              class="ellipsis">{{ race.trait }}</span></mat-cell>
         </ng-container>
         <ng-container matColumnDef="delete">
           <mat-header-cell *matHeaderCellDef></mat-header-cell>
-          <mat-cell *matCellDef="let race" data-label="delete"><button (click)="deleteConfirm(race)"  type="button" aria-label="Delete">
-            <i class="bi bi-x"></i>
-        </button></mat-cell>
+          <mat-cell *matCellDef="let race" data-label="delete">
+            <button (click)="deleteConfirm(race)" mat-icon-button type="button" aria-label="Delete">
+              <mat-icon (click)="deleteConfirm(race)">delete</mat-icon>
+            </button>
+          </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
         <mat-row *matRowDef="let race; columns: columnsToDisplay"></mat-row>
       </mat-table>
-    </div>
-      <mat-paginator [length]="100"
-              [pageSize]="10"
-              [pageSizeOptions]="[5, 10, 25, 100]"
-              aria-label="Select page">
+      <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page">
       </mat-paginator>
     </div>
-  </div>
+  </mat-card-content>
+  </mat-card>
   <wb-modal id="deleteRaceConfirm">
     <h1>Are you Sure?</h1>
     <p>Do you wish to delete this race?</p>
@@ -51,6 +50,5 @@
     <p>{{ content }}</p>
     <button (click)="closeModal();">Close</button>
   </wb-modal>
-  <ngx-loading
-    [show]="loading">
+  <ngx-loading [show]="loading">
   </ngx-loading>

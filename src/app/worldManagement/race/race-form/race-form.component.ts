@@ -19,6 +19,7 @@ export class RaceFormComponent {
   worldId: string;
   isAddMode: boolean;
   public loading = false;
+  redirectUrl: string | undefined;
 
   constructor(
     private route: ActivatedRoute, 
@@ -26,6 +27,7 @@ export class RaceFormComponent {
         private raceService: RaceService, 
         private alertService: AlertService,
         private worldStorage: WorldStorageService) {
+    this.redirectUrl = this.router.getCurrentNavigation()?.previousNavigation?.finalUrl?.toString();
   }
 
 
@@ -57,7 +59,7 @@ export class RaceFormComponent {
         next: result => { 
           this.loading = false;
           this.alertService.success("Race saved successfully!");
-          this.gotoRaceList() },
+          this.gotoRedirect() },
         error: err => {
           this.loading = false;
           this.alertService.error("Error creating race: " + err.error.error);
@@ -67,7 +69,7 @@ export class RaceFormComponent {
         next: result => { 
           this.loading = false;
           this.alertService.success("Race updated successfully!");
-          this.gotoRaceList() },
+          this.gotoRedirect() },
         error: err => {
           this.loading = false;
           this.alertService.error("Error updating race: " + err.error.error);
@@ -76,7 +78,7 @@ export class RaceFormComponent {
   }
 
   
-  gotoRaceList() {
-    this.router.navigate(['../races'], { relativeTo: this.route });
+  gotoRedirect() {
+    this.router.navigate(['/'+this.redirectUrl]);
   }
 }

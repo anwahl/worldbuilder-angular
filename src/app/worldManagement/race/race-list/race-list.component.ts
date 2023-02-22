@@ -19,11 +19,11 @@ import { RaceService } from '../service/race.service';
 export class RaceListComponent {
 
   races: Race[];
-  ds: MatTableDataSource<Race>;
   world: World;
   loading = false;
   raceToDelete: Race;
   worldId: string;
+  ds: MatTableDataSource<Race>;
   columnsToDisplay = ["update","name","description","trait","delete"];
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -66,7 +66,6 @@ export class RaceListComponent {
           this.alertService.error('Could not load World. ' + err);
         }});
     };
-    
   }
 
   showContent(content: string) {
@@ -95,6 +94,9 @@ export class RaceListComponent {
           this.alertService.success('Race ' + race.name + ' was successfully deleted.');
           this.loading = false;
           this.races = this.races.filter(item => item.id !== race.id);
+          this.ds = new MatTableDataSource<Race>(this.races);
+          this.ds.sort = this.sort;
+          this.ds.paginator = this.paginator;
         }, err => { 
           this.alertService.error('Race ' + race.name + ' could not deleted. Reason: ' + err);
         });

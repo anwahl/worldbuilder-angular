@@ -1,65 +1,54 @@
 <div class="col-md-12">
-    <div class="card card-container">
-      <h4>{{ isAddMode ? 'Create New Race' : 'Update ' + race.name }}</h4>
-      <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" [(ngModel)]="race.name" 
-            class="form-control" 
-            id="name" 
-            name="name"
-            minlength="3"
-            maxlength="20" 
-            placeholder="Enter race's name"
-            required #name="ngModel"
-            [ngClass]="{ 'is-invalid': f.submitted && name.errors }">
-        <div class="invalid-feedback" *ngIf="f.submitted && name.errors">
-            <div *ngIf="name.errors['required']">Name is required</div>
-            <div *ngIf="name.errors['minlength']">Name must be at least 3 characters</div>
-            <div *ngIf="name.errors['maxlength']">Name must be at most 20 characters</div>
-        </div>
-        </div>
-        <div class="form-group">
-          <label for="description">Description</label>
-          <textarea type="textarea" [(ngModel)]="race.description" 
-            class="form-control" 
-            id="description" 
-            name="description" 
-            minlength="3"
-            maxlength="256"
-            placeholder="Enter race's description"
-            required #description="ngModel"
-            [ngClass]="{ 'is-invalid': f.submitted && description.errors }"></textarea>
-            <div class="invalid-feedback" *ngIf="description.errors && f.submitted">
+  <mat-card>
+    <mat-card-header><mat-card-title>{{ isAddMode ? 'Create New Race' : 'Update ' + race.name }}</mat-card-title></mat-card-header>
+    <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+      <table>
+        <tr>
+          <td>
+            <mat-form-field>
+              <label for="name">Name</label>
+              <input matInput type="text" [(ngModel)]="race.name" class="form-control" id="name" name="name"
+                minlength="3" maxlength="20" placeholder="Enter race's name" required #name="ngModel"
+                [ngClass]="{ 'is-invalid': f.submitted && name.errors }">
+              <div class="invalid-feedback" *ngIf="f.submitted && name.errors">
+                <div *ngIf="name.errors['required']">Name is required</div>
+                <div *ngIf="name.errors['minlength']">Name must be at least 3 characters</div>
+                <div *ngIf="name.errors['maxlength']">Name must be at most 20 characters</div>
+              </div>
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field>
+              <label for="description">Description</label>
+              <textarea matInput type="textarea" [(ngModel)]="race.description" class="form-control" id="description"
+                name="description" minlength="3" maxlength="256" placeholder="Enter race's description" required
+                #description="ngModel" [ngClass]="{ 'is-invalid': f.submitted && description.errors }"></textarea>
+              <div class="invalid-feedback" *ngIf="description.errors && f.submitted">
                 <div *ngIf="description.errors['required']">Description is required</div>
                 <div *ngIf="description.errors['minlength']">Description must be at least 3 characters</div>
                 <div *ngIf="description.errors['maxlength']">Description must be at most 256 characters</div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="description">Trait</label>
-            <textarea type="textarea" [(ngModel)]="race.trait" 
-              class="form-control" 
-              id="trait" 
-              name="trait" 
-              minlength="3"
-              maxlength="128"
-              placeholder="Enter race's trait"
-              required #trait="ngModel"
-              [ngClass]="{ 'is-invalid': f.submitted && trait.errors }"></textarea>
-              <div class="invalid-feedback" *ngIf="trait.errors && f.submitted">
-                  <div *ngIf="trait.errors['required']">Trait is required</div>
-                  <div *ngIf="trait.errors['minlength']">Trait must be at least 3 characters</div>
-                  <div *ngIf="trait.errors['maxlength']">Trait must be at most 128 characters</div>
               </div>
-            </div>
-        <div class="form-group">
-            <button type="submit"  
-            class="btn btn-info">Submit</button>
-        </div>
-        </form>
-    </div>
-  </div>
-  <ngx-loading
-    [show]="loading"
-  ></ngx-loading>
+            </mat-form-field>
+            <mat-form-field>
+              <label for="description">Trait</label>
+              <textarea matInput type="textarea" [(ngModel)]="race.trait" class="form-control" id="trait" name="trait"
+                minlength="3" maxlength="128" placeholder="Enter race's trait" required #trait="ngModel"
+                [ngClass]="{ 'is-invalid': f.submitted && trait.errors }"></textarea>
+              <div class="invalid-feedback" *ngIf="trait.errors && f.submitted">
+                <div *ngIf="trait.errors['required']">Trait is required</div>
+                <div *ngIf="trait.errors['minlength']">Trait must be at least 3 characters</div>
+                <div *ngIf="trait.errors['maxlength']">Trait must be at most 128 characters</div>
+              </div>
+            </mat-form-field>
+          </td>
+        </tr>
+      </table>
+      <div class="form-group">
+        <button mat-raised-button color="accent" type="submit">Submit</button>
+      </div>
+    </form>
+  </mat-card>
+</div>
+<ngx-loading [show]="loading"></ngx-loading>

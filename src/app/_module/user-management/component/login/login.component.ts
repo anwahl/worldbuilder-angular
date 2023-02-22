@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AlertService } from 'src/app/_alert';
 import { AuthService } from '../../service/auth.service';
 import { StorageService } from '../../service/storage.service';
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
   public loading = false;
   username: string = '';
 
-  constructor(private authService: AuthService, private storageService: StorageService, private alertService: AlertService) { }
+  constructor(private authService: AuthService, private storageService: StorageService, private alertService: AlertService, private router: Router) { }
 
   ngOnInit(): void {
     if (this.storageService.isLoggedIn()) {
@@ -44,6 +45,10 @@ export class LoginComponent implements OnInit {
         this.alertService.error("Error logging in: " + err.error.message);
       }
     });
+  }
+
+  forgotPassword() {
+    this.router.navigate(['/resetPassword']);
   }
 
   reloadPage(): void {

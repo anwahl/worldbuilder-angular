@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { RaceFormComponent } from '../race/race-form/race-form.component';
+import { WorldFormComponent } from '../../_component/world-form/world-form.component';
 import { WorldManagementRoutingModule } from './world-management-routing.module';
 import { RaceListComponent } from '../race/race-list/race-list.component';
 import { WorldHomeComponent } from '../home/world-home/world-home.component';
@@ -20,7 +21,8 @@ import { WorldStorageService } from '../service/world-storage.service';
   declarations: [
     RaceFormComponent,
     RaceListComponent,
-    WorldHomeComponent
+    WorldHomeComponent,
+    WorldFormComponent
   ],
   providers: [ WorldStorageService ]
 })

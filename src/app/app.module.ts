@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { WorldFormComponent } from './_component/world-form/world-form.component';
 import { WorldListComponent } from './_component/world-list/world-list.component';
 import { WorldService } from './_service/world.service';
 import { httpInterceptorProviders } from './_helpers/http.interceptor';
@@ -17,13 +16,14 @@ import { WelcomeModule } from './_module/welcome/welcome.module';
 import { UserManagementModule } from './_module/user-management/module/user-management.module';
 import { UserService } from './_module/user-management/service/user.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { WelcomeComponent } from './_component/welcome/welcome.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    WorldFormComponent,
     WorldListComponent,
-    WorldManagementComponent
+    WorldManagementComponent,
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,

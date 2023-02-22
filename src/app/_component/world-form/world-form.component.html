@@ -1,60 +1,48 @@
 <div class="col-md-12">
-    <div class="card card-container">
-      <h4>{{ isAddMode ? 'Create New World' : 'Update ' + world.name }}</h4>
-      <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" [(ngModel)]="world.name" 
-            class="form-control" 
-            id="name" 
-            name="name"
-            minlength="3"
-            maxlength="20" 
-            placeholder="Enter world's name"
-            required #name="ngModel"
-            [ngClass]="{ 'is-invalid': f.submitted && name.errors }">
-        <div class="invalid-feedback" *ngIf="f.submitted && name.errors">
-            <div *ngIf="name.errors['required']">Name is required</div>
-            <div *ngIf="name.errors['minlength']">Name must be at least 3 characters</div>
-            <div *ngIf="name.errors['maxlength']">Name must be at most 20 characters</div>
-        </div>
-        </div>
-        <div class="form-group">
-          <label for="description">Description</label>
-          <textarea type="textarea" [(ngModel)]="world.description" 
-            class="form-control" 
-            id="description" 
-            name="description" 
-            minlength="3"
-            maxlength="256"
-            placeholder="Enter world's description"
-            required #description="ngModel"
-            [ngClass]="{ 'is-invalid': f.submitted && description.errors }"></textarea>
-            <div class="invalid-feedback" *ngIf="description.errors && f.submitted">
+  <mat-card>
+    <mat-card-header><mat-card-title>{{ isAddMode ? 'Create New World' : 'Update ' + world.name }}</mat-card-title></mat-card-header>
+    <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+      <table>
+        <tr>
+          <td>
+            <mat-form-field>
+              <label for="name">Name</label>
+              <input matInput type="text" [(ngModel)]="world.name" class="form-control" id="name" name="name"
+                minlength="3" maxlength="20" placeholder="Enter world's name" required #name="ngModel"
+                [ngClass]="{ 'is-invalid': f.submitted && name.errors }">
+              <div class="invalid-feedback" *ngIf="f.submitted && name.errors">
+                <div *ngIf="name.errors['required']">Name is required</div>
+                <div *ngIf="name.errors['minlength']">Name must be at least 3 characters</div>
+                <div *ngIf="name.errors['maxlength']">Name must be at most 20 characters</div>
+              </div>
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field>
+              <label for="description">Description</label>
+              <textarea matInput type="textarea" [(ngModel)]="world.description" class="form-control" id="description"
+                name="description" minlength="3" maxlength="256" placeholder="Enter world's description" required
+                #description="ngModel" [ngClass]="{ 'is-invalid': f.submitted && description.errors }"></textarea>
+              <div class="invalid-feedback" *ngIf="description.errors && f.submitted">
                 <div *ngIf="description.errors['required']">Description is required</div>
                 <div *ngIf="description.errors['minlength']">Description must be at least 3 characters</div>
                 <div *ngIf="description.errors['maxlength']">Description must be at most 256 characters</div>
-            </div>
-          </div>
-        <div class="form-check">
-          <input type="checkbox" [(ngModel)]="world.isPrivate" 
-            class="form-check-input" 
-            id="isPrivate" 
-            name="isPrivate" 
-            placeholder="Keep private?"
-            #isPrivate="ngModel">
-            <label class="form-check-label" for="isPrivate">Private</label>
-        </div>
-        <div class="form-group">
-            <button type="submit"  
-            class="btn btn-info">Submit</button>
-        </div>
-          <div class="alert alert-warning" *ngIf="f.submitted && submitFailed">
-            Submit failed!<br />{{ errorMessage }}
-          </div>
-        </form>
-    </div>
-  </div>
-  <ngx-loading
-    [show]="loading"
-  ></ngx-loading>
+              </div>
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-checkbox name="isPrivate" [(ngModel)]="world.isPrivate">Private</mat-checkbox>
+          </td>
+        </tr>
+      </table>
+      <div class="form-group">
+        <button type="submit" mat-raised-button color="accent">Submit</button>
+      </div>
+    </form>
+  </mat-card>
+</div>
+<ngx-loading [show]="loading"></ngx-loading>

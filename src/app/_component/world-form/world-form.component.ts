@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, ViewChild } from '@angular/core';
+import { ActivatedRoute, Navigation, Router } from '@angular/router';
 import { WorldService } from '../../_service/world.service';
 import { World } from '../../_model/world';
+import { AlertService } from 'src/app/_alert';
 
 @Component({
   selector: 'app-world-form',
@@ -15,18 +16,25 @@ export class WorldFormComponent {
   world: World;
   id: string;
   isAddMode: boolean;
+  curUrl: string | undefined;
   public loading = false;
 
   constructor(
     private route: ActivatedRoute, 
       private router: Router, 
+      private alertService: AlertService,
         private worldService: WorldService) {
-    
+    this.curUrl = this.router.url;
+    console.log(this.curUrl);
     this.world = new World();
   }
 
   ngOnInit() {
-    this.id = this.route.snapshot.params['id'];
+    if(this.route.parent) {
+      this.id = this.route.parent.snapshot.params['id'];
+    } else {
+      this.id = this.route.snapshot.params['id'];
+    }
     this.isAddMode = !this.id;
 
     if (!this.isAddMode) {
@@ -35,7 +43,7 @@ export class WorldFormComponent {
         this.loading = false;
         this.world = response;
       }, (err) => {
-        console.log(err);
+        this.alertService.error("Error retrieving world: " + err.error.error);
       });
     }
   }
@@ -48,8 +56,7 @@ export class WorldFormComponent {
           this.gotoWorldList() },
         error: err => {
           this.loading = false;
-          this.errorMessage = err.error.title + "; " + err.error.detail;
-          this.submitFailed = true;
+          this.alertService.error("Error creating world: " + err.error.error);
         }});
     } else {
       this.worldService.update(this.world).subscribe({
@@ -58,14 +65,17 @@ export class WorldFormComponent {
           this.gotoWorldList() },
         error: err => {
           this.loading = false;
-          this.errorMessage = err.error.title + "; " + err.error.detail;
-          this.submitFailed = true;
+          this.alertService.error("Error updating world: " + err.error.error);
         }});
     }
   }
   
 
   gotoWorldList() {
-    this.router.navigate(['/worlds']);
+    if (this.curUrl?.includes("manage")) {
+      this.router.navigate([this.curUrl]).then(page => { window.location.reload(); });;
+    } else {
+      this.router.navigate(['/worlds']);
+    }
   }
 }

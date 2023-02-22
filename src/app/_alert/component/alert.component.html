@@ -1,5 +1,5 @@
-<div *ngFor="let alert of alerts" class="{{cssClass(alert)}}">
-    <div [innerHTML]="alert.message"></div>
-        <button type="button" class="btn-close" (click)="removeAlert(alert)"></button>
+<div class="wb-alert-container" *ngFor="let alert of alerts" class="{{cssClass(alert)}}">
+    <div class="wb-alert-message" [innerHTML]="alert.message"></div>
+    <button class="wb-alert-close" type="button" mat-icon-button (click)="removeAlert(alert)"><mat-icon>close</mat-icon></button>
 </div>
  

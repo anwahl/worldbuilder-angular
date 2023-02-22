@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { World } from '../../_model/world';
 import { WorldService } from '../../_service/world.service';
 import { ModalService } from '../../_modal';
 import { AlertService } from '../../_alert';
 import { StorageService } from 'src/app/_module/user-management/service/storage.service';
 import { User } from 'src/app/_module/user-management/model/user';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 
 @Component({
@@ -22,6 +25,12 @@ export class WorldListComponent implements OnInit {
   user: User;
   public loading = false;
   worldToDelete: World;
+  ds: MatTableDataSource<World>;
+  columnsToDisplay: string[];
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  content: String;
+  
   constructor(private worldService: WorldService,
       private storageService: StorageService,
       private modalService: ModalService,
@@ -39,11 +48,19 @@ export class WorldListComponent implements OnInit {
       this.worldService.findByUser(this.user).subscribe(data => {
         this.loading = false;
         this.worlds = data;
+        this.columnsToDisplay = ["update","manage","name","description","isPrivate","delete"];
+        this.ds = new MatTableDataSource<World>(this.worlds);
+        this.ds.sort = this.sort;
+        this.ds.paginator = this.paginator;
       }, (err) => { console.error(err)});
     } else {
       this.worldService.findAll().subscribe(data => { 
         this.loading = false;
         this.worlds = data;
+        this.columnsToDisplay = ["view","user","name","description"];
+        this.ds = new MatTableDataSource<World>(this.worlds);
+        this.ds.sort = this.sort;
+        this.ds.paginator = this.paginator;
       });
     }
   }
@@ -55,6 +72,10 @@ export class WorldListComponent implements OnInit {
       this.worlds = data;
       this.userWorlds = false;
       this.publicWorlds = true;
+      this.columnsToDisplay = ["view","user","name","description"];
+      this.ds = new MatTableDataSource<World>(this.worlds);
+      this.ds.sort = this.sort;
+      this.ds.paginator = this.paginator;
     });
     
   }
@@ -66,6 +87,10 @@ export class WorldListComponent implements OnInit {
       this.worlds = data;
       this.userWorlds = true;
       this.publicWorlds = false;
+      this.columnsToDisplay = ["update","manage","name","description","isPrivate","delete"];
+      this.ds = new MatTableDataSource<World>(this.worlds);
+      this.ds.sort = this.sort;
+      this.ds.paginator = this.paginator;
     });
   }
 
@@ -86,8 +111,16 @@ export class WorldListComponent implements OnInit {
           this.alertService.success('World ' + world.name + ' was successfully deleted.');
           this.loading = false;
           this.worlds = this.worlds.filter(item => item.id !== world.id);
+          this.ds = new MatTableDataSource<World>(this.worlds);
+          this.ds.sort = this.sort;
+          this.ds.paginator = this.paginator;
         }, err => { 
           this.alertService.error('World ' + world.name + ' could not deleted. Reason: ' + err);
         });
+  }
+
+  showContent(content: string) {
+    this.content = content;
+    this.modalService.open('showContent');
   }
 }
