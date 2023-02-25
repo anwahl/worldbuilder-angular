@@ -19,12 +19,17 @@ export class LoginComponent implements OnInit {
   public loading = false;
   username: string = '';
 
-  constructor(private authService: AuthService, private storageService: StorageService, private alertService: AlertService, private router: Router) { }
+  constructor(private authService: AuthService, 
+              private storageService: StorageService, 
+              private alertService: AlertService,
+              private router: Router) { }
 
   ngOnInit(): void {
     if (this.storageService.isLoggedIn()) {
       this.isLoggedIn = true;
       this.username = this.storageService.getUser().username;
+      this.alertService.success("Logged in as " + this.username);
+      this.router.navigate(['/worlds']);
     }
   }
 

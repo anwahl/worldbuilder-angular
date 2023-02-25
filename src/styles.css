@@ -1,15 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: var(--bs-purple) !important;}
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: var(--bs-gray) !important;}
 div.form-group > button, div.form-group > a > button, mat-form-field > button, mat-form-field > a > button {
     margin: 5px;
 }
+
+.wb-alert-success .mat-mdc-snack-bar-label .mdc-snackbar__label {
+  color : green;
+}
+.wb-alert-error .mat-mdc-snack-bar-label .mdc-snackbar__label{
+  color : red;
+}
+.wb-alert-info .mat-mdc-snack-bar-label .mdc-snackbar__label{
+  color : white;
+}
+.wb-alert-warn .mat-mdc-snack-bar-label .mdc-snackbar__label{
+  color : yellow;
+}
+
 mat-form-field {
   margin: 5px;
-}
-.navbar-brand {
-    margin-left: 10px;
 }
 
 mat-card {

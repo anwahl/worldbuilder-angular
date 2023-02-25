@@ -55,6 +55,7 @@ export class WorldListComponent implements OnInit {
       }, (err) => { console.error(err)});
     } else {
       this.worldService.findAll().subscribe(data => { 
+        this.userWorlds = false;
         this.loading = false;
         this.worlds = data;
         this.columnsToDisplay = ["view","user","name","description"];

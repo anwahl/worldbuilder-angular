@@ -13,6 +13,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 
 
@@ -33,7 +37,10 @@ import { MatCardModule } from '@angular/material/card';
     MatInputModule,
     MatIconModule,
     MatCheckboxModule,
-    MatCardModule
+    MatCardModule,
+    MatMenuModule,
+    MatToolbarModule,
+    MatSnackBarModule
   ],
   exports: [
     ModalComponent,
@@ -48,7 +55,10 @@ import { MatCardModule } from '@angular/material/card';
     MatInputModule,
     MatIconModule,
     MatCheckboxModule,
-    MatCardModule
+    MatCardModule,
+    MatMenuModule,
+    MatToolbarModule,
+    MatSnackBarModule
   ],
 })
 export class WelcomeModule { }

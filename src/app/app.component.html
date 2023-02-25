@@ -1,37 +1,44 @@
 <div class="container">
   <div class="row">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" [routerLink]="['./']" >{{ title }}</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+      <mat-toolbar color="primary">
+        <button mat-icon-button [matMenuTriggerFor]="worldsMenu" aria-label="Worlds Menu">
+          <mat-icon>menu</mat-icon>
         </button>
+        <span [routerLink]="['./']" >{{ title }}</span>
+        <span style="flex: 1 1 auto;"></span>
+        <mat-menu #worldsMenu="matMenu">
+          <button *ngIf="isLoggedIn" mat-menu-item routerLink="/world">
+            <mat-icon>create</mat-icon>
+            <span>Create World</span>
+          </button>
+          <button mat-menu-item routerLink="/worlds">
+            <mat-icon>list</mat-icon>
+            <span>List Worlds</span>
+          </button>
+        </mat-menu>
         
-        <div class="collapse navbar-collapse" id="navbarContent">
-          <ul class="navbar-nav mr-auto" style="width: 100%; display: inline-block;">
-            <li class="nav-item dropdown" style="display: inline-block;">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Worlds
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a *ngIf="isLoggedIn" routerLink="/world" class="dropdown-item">Create World</a>
-                <a routerLink="/worlds" class="dropdown-item"> List Worlds</a>
-              </div>
-            </li>
-            <li class="nav-item dropdown" style="float: right; display: flex;">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{ isLoggedIn ? 'User Management' : 'Login/Register' }}
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a *ngIf="!isLoggedIn" routerLink="/login" class="dropdown-item">Login</a>
-                <a *ngIf="!isLoggedIn" routerLink="/register" class="dropdown-item">Register</a>
-                <a *ngIf="isLoggedIn" routerLink="/profile" class="dropdown-item">Profile</a>
-                <div *ngIf="isLoggedIn" class="dropdown-divider"></div>
-                <a *ngIf="isLoggedIn" href class="nav-link" class="dropdown-item" (click)="this.logout()">LogOut</a>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </nav>
+        <button style="float:right;" mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="User Menu">
+          <mat-icon>person</mat-icon>
+        </button>
+        <mat-menu #userMenu="matMenu">
+          <button *ngIf="!isLoggedIn" mat-menu-item routerLink="/login">
+            <mat-icon>login</mat-icon>
+            <span>Login</span>
+          </button>
+          <button *ngIf="!isLoggedIn" mat-menu-item routerLink="/register">
+            <mat-icon>app_registration</mat-icon>
+            <span>Register</span>
+          </button>
+          <button *ngIf="isLoggedIn" mat-menu-item routerLink="/profile">
+            <mat-icon>frame_person</mat-icon>
+            <span>Profile</span>
+          </button>
+          <button *ngIf="isLoggedIn" mat-menu-item (click)="this.logout()">
+            <mat-icon>logout</mat-icon>
+            <span>LogOut</span>
+          </button>
+        </mat-menu>
+      </mat-toolbar>
       <alert></alert>
       <router-outlet></router-outlet>
     </div>
