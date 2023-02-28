@@ -5,6 +5,10 @@ import { RaceFormComponent } from 'src/app/worldManagement/race/race-form/race-f
 import { WorldManagementComponent } from 'src/app/worldManagement/component/world-management.component';
 import { RaceListComponent } from '../race/race-list/race-list.component';
 import { WorldHomeComponent } from '../home/world-home/world-home.component';
+import { ActorFormComponent } from '../actor/actor-form/actor-form.component';
+import { ActorListComponent } from '../actor/actor-list/actor-list.component';
+import { LanguageFormComponent } from '../language/language-form/language-form.component';
+import { LanguageListComponent } from '../language/language-list/language-list.component';
 
 
 const worldManagementRoutes: Routes = [
@@ -27,6 +31,30 @@ const worldManagementRoutes: Routes = [
       {
         path: 'races',
         component: RaceListComponent
+      },
+      {
+        path: 'actor',
+        component: ActorFormComponent
+      },
+      {
+        path: 'actor/:id',
+        component: ActorFormComponent
+      },
+      {
+        path: 'actors',
+        component: ActorListComponent
+      },
+      {
+        path: 'language',
+        component: LanguageFormComponent
+      },
+      {
+        path: 'language/:id',
+        component: LanguageFormComponent
+      },
+      {
+        path: 'languages',
+        component: LanguageListComponent
       },
       {
         path: '',

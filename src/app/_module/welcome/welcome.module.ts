@@ -16,6 +16,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDividerModule } from '@angular/material/divider';
+
 
 
 
@@ -40,7 +43,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatCardModule,
     MatMenuModule,
     MatToolbarModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSelectModule,
+    MatDividerModule
   ],
   exports: [
     ModalComponent,
@@ -58,7 +63,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatCardModule,
     MatMenuModule,
     MatToolbarModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSelectModule,
+    MatDividerModule
   ],
 })
 export class WelcomeModule { }

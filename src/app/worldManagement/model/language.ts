@@ -1,10 +1,8 @@
 import { World } from "src/app/_model/world";
 
-
-export class Race {
+export class Language {
     id?: string;
     world: World;
     name: string;
     description: string;
-    trait: string;
 }

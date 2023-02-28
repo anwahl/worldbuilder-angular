@@ -7,29 +7,29 @@ import { AlertService } from 'src/app/_alert';
 import { ModalService } from 'src/app/_modal';
 import { World } from 'src/app/_model/world';
 import { WorldService } from 'src/app/_service/world.service';
-import { Race } from '../../model/race';
+import { Language } from '../../model/language';
 import { WorldStorageService } from '../../service/world-storage.service';
-import { RaceService } from '../service/race.service';
+import { LanguageService } from '../service/language.service';
 
 @Component({
-  selector: 'app-race-list',
-  templateUrl: './race-list.component.html',
-  styleUrls: ['./race-list.component.css']
+  selector: 'app-language-list',
+  templateUrl: './language-list.component.html',
+  styleUrls: ['./language-list.component.css']
 })
-export class RaceListComponent {
+export class LanguageListComponent {
 
-  races: Race[];
+  languages: Language[];
   world: World;
   loading = false;
-  raceToDelete: Race;
+  languageToDelete: Language;
   worldId: string;
-  ds: MatTableDataSource<Race>;
-  columnsToDisplay = ["update","name","description","trait","delete"];
+  ds: MatTableDataSource<Language>;
+  columnsToDisplay = ["update","name","description","delete"];
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   content: String;
 
-  constructor(private raceService: RaceService,
+  constructor(private languageService: LanguageService,
       private modalService: ModalService,
       private alertService: AlertService,
       private worldStorage: WorldStorageService,
@@ -44,20 +44,20 @@ export class RaceListComponent {
       param => { this.worldId = param['id']; }) : null
     if (this.worldStorage.existsById(this.worldId)){
       this.world = this.worldStorage.getWorld();
-      this.raceService.findByWorld(this.world).subscribe(data => {
+      this.languageService.findByWorld(this.world).subscribe(data => {console
         this.loading = false;
-        this.races = data;
-        this.ds = new MatTableDataSource<Race>(this.races);
+        this.languages = data;
+        this.ds = new MatTableDataSource<Language>(this.languages);
         this.ds.sort = this.sort;
         this.ds.paginator = this.paginator;
       });
     } else {
         this.worldService.findById(this.worldId).subscribe({next: data => {
           this.world = data;
-          this.raceService.findByWorld(this.world).subscribe(data => {
+          this.languageService.findByWorld(this.world).subscribe(data => {
             this.loading = false;
-            this.races = data;
-            this.ds = new MatTableDataSource<Race>(this.races);
+            this.languages = data;
+            this.ds = new MatTableDataSource<Language>(this.languages);
             this.ds.sort = this.sort;
             this.ds.paginator = this.paginator;
 
@@ -73,32 +73,32 @@ export class RaceListComponent {
     this.modalService.open('showContent');
   }
 
-  navigateToRace(race: Race){
-    this.router.navigate(['../race', race.id], { relativeTo: this.route });
+  navigateToLanguage(language: Language){
+    this.router.navigate(['../language', language.id], { relativeTo: this.route });
   }
 
-  deleteConfirm(race: Race) {
-    this.raceToDelete = race;
-    this.modalService.open('deleteRaceConfirm');
+  deleteConfirm(language: Language) {
+    this.languageToDelete = language;
+    this.modalService.open('deleteLanguageConfirm');
   }
 
   closeModal() {
     this.modalService.close();
   }
 
-  deleteRace(race: Race) {
+  deleteLanguage(language: Language) {
    this.closeModal()
    this.loading = true;
-    this.raceService.delete(race)
+    this.languageService.delete(language)
         .subscribe(response => {
-          this.alertService.success('Race ' + race.name + ' was successfully deleted.');
+          this.alertService.success('Language ' + language.name + ' was successfully deleted.');
           this.loading = false;
-          this.races = this.races.filter(item => item.id !== race.id);
-          this.ds = new MatTableDataSource<Race>(this.races);
+          this.languages = this.languages.filter(item => item.id !== language.id);
+          this.ds = new MatTableDataSource<Language>(this.languages);
           this.ds.sort = this.sort;
           this.ds.paginator = this.paginator;
         }, err => { 
-          this.alertService.error('Race ' + race.name + ' could not deleted. Reason: ' + err.error);
+          this.alertService.error('Language ' + language.name + ' could not deleted. Reason: ' + err.error);
         });
   }
 }

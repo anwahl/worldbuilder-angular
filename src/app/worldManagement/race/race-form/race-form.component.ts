@@ -1,8 +1,7 @@
-import { Component, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'src/app/_alert';
 import { World } from 'src/app/_model/world';
-import { WorldService } from 'src/app/_service/world.service';
 import { Race } from '../../model/race';
 import { WorldStorageService } from '../../service/world-storage.service';
 import { RaceService } from '../service/race.service';

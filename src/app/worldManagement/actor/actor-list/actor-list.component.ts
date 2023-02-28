@@ -7,29 +7,29 @@ import { AlertService } from 'src/app/_alert';
 import { ModalService } from 'src/app/_modal';
 import { World } from 'src/app/_model/world';
 import { WorldService } from 'src/app/_service/world.service';
-import { Race } from '../../model/race';
+import { Actor } from '../../model/actor';
 import { WorldStorageService } from '../../service/world-storage.service';
-import { RaceService } from '../service/race.service';
+import { ActorService } from '../service/actor.service';
 
 @Component({
-  selector: 'app-race-list',
-  templateUrl: './race-list.component.html',
-  styleUrls: ['./race-list.component.css']
+  selector: 'app-actor-list',
+  templateUrl: './actor-list.component.html',
+  styleUrls: ['./actor-list.component.css']
 })
-export class RaceListComponent {
+export class ActorListComponent {
 
-  races: Race[];
+  actors: Actor[];
   world: World;
   loading = false;
-  raceToDelete: Race;
+  actorToDelete: Actor;
   worldId: string;
-  ds: MatTableDataSource<Race>;
-  columnsToDisplay = ["update","name","description","trait","delete"];
+  ds: MatTableDataSource<Actor>;
+  columnsToDisplay = ["update","firstName","lastName","description","delete"];
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   content: String;
 
-  constructor(private raceService: RaceService,
+  constructor(private actorService: ActorService,
       private modalService: ModalService,
       private alertService: AlertService,
       private worldStorage: WorldStorageService,
@@ -44,20 +44,20 @@ export class RaceListComponent {
       param => { this.worldId = param['id']; }) : null
     if (this.worldStorage.existsById(this.worldId)){
       this.world = this.worldStorage.getWorld();
-      this.raceService.findByWorld(this.world).subscribe(data => {
+      this.actorService.findByWorld(this.world).subscribe(data => {
         this.loading = false;
-        this.races = data;
-        this.ds = new MatTableDataSource<Race>(this.races);
+        this.actors = data;
+        this.ds = new MatTableDataSource<Actor>(this.actors);
         this.ds.sort = this.sort;
         this.ds.paginator = this.paginator;
       });
     } else {
         this.worldService.findById(this.worldId).subscribe({next: data => {
           this.world = data;
-          this.raceService.findByWorld(this.world).subscribe(data => {
+          this.actorService.findByWorld(this.world).subscribe(data => {
             this.loading = false;
-            this.races = data;
-            this.ds = new MatTableDataSource<Race>(this.races);
+            this.actors = data;
+            this.ds = new MatTableDataSource<Actor>(this.actors);
             this.ds.sort = this.sort;
             this.ds.paginator = this.paginator;
 
@@ -73,32 +73,32 @@ export class RaceListComponent {
     this.modalService.open('showContent');
   }
 
-  navigateToRace(race: Race){
-    this.router.navigate(['../race', race.id], { relativeTo: this.route });
+  navigateToActor(actor: Actor){
+    this.router.navigate(['../actor', actor.id], { relativeTo: this.route });
   }
 
-  deleteConfirm(race: Race) {
-    this.raceToDelete = race;
-    this.modalService.open('deleteRaceConfirm');
+  deleteConfirm(actor: Actor) {
+    this.actorToDelete = actor;
+    this.modalService.open('deleteActorConfirm');
   }
 
   closeModal() {
     this.modalService.close();
   }
 
-  deleteRace(race: Race) {
+  deleteActor(actor: Actor) {
    this.closeModal()
    this.loading = true;
-    this.raceService.delete(race)
+    this.actorService.delete(actor)
         .subscribe(response => {
-          this.alertService.success('Race ' + race.name + ' was successfully deleted.');
+          this.alertService.success('Actor ' + actor.firstName + ' ' + actor.lastName + ' was successfully deleted.');
           this.loading = false;
-          this.races = this.races.filter(item => item.id !== race.id);
-          this.ds = new MatTableDataSource<Race>(this.races);
+          this.actors = this.actors.filter(item => item.id !== actor.id);
+          this.ds = new MatTableDataSource<Actor>(this.actors);
           this.ds.sort = this.sort;
           this.ds.paginator = this.paginator;
         }, err => { 
-          this.alertService.error('Race ' + race.name + ' could not deleted. Reason: ' + err.error);
+          this.alertService.error('Actor ' + actor.firstName + ' ' + actor.lastName + ' could not deleted. Reason: ' + err.error);
         });
   }
 }

@@ -1,10 +1,10 @@
 import { World } from "src/app/_model/world";
+import { Religion } from "./religion";
 
-
-export class Race {
+export class God {
     id?: string;
     world: World;
     name: string;
     description: string;
-    trait: string;
+    religion: Religion;
 }
