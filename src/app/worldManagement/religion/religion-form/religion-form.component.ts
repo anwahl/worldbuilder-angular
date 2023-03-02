@@ -3,18 +3,18 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'src/app/_alert';
 import { World } from 'src/app/_model/world';
-import { Language } from '../../model/language';
+import { Religion } from '../../model/religion';
 import { WorldStorageService } from '../../service/world-storage.service';
-import { LanguageService } from '../../language/service/language.service';
+import { ReligionService } from '../../religion/service/religion.service';
 
 
 @Component({
-  selector: 'app-language-form',
-  templateUrl: './language-form.component.html',
-  styleUrls: ['./language-form.component.css',]
+  selector: 'app-religion-form',
+  templateUrl: './religion-form.component.html',
+  styleUrls: ['./religion-form.component.css',]
 })
-export class LanguageFormComponent {
-  language: Language;
+export class ReligionFormComponent {
+  religion: Religion;
   world: World;
   id: string;
   worldId: string;
@@ -47,7 +47,7 @@ export class LanguageFormComponent {
         private alertService: AlertService,
         private formBuilder: FormBuilder,
         private worldStorage: WorldStorageService,
-        private languageService: LanguageService) {
+        private religionService: ReligionService) {
     
     this.redirectUrl = this.router.getCurrentNavigation()?.previousNavigation?.finalUrl?.toString();
   }
@@ -55,18 +55,18 @@ export class LanguageFormComponent {
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
-    this.language = new Language();
-    this.language.world = this.worldStorage.getWorld();
+    this.religion = new Religion();
+    this.religion.world = this.worldStorage.getWorld();
 
     if (!this.isAddMode) {
       this.loading = true;
-      this.languageService.findById(this.id).subscribe({
+      this.religionService.findById(this.id).subscribe({
         next: data => {
             this.loading = false;
-            this.language = data;
+            this.religion = data;
             this.form.patchValue({
-              name: this.language.name,
-              description: this.language.description
+              name: this.religion.name,
+              description: this.religion.description
             });
           }, error: actorErr => {
             this.loading = false;
@@ -77,19 +77,19 @@ export class LanguageFormComponent {
   }
 
   async onSubmit() {
-    if(this.form.valid) {
+    if (this.form.valid) {
       this.loading = true;
       const name = this.form.controls.name.value || '';
       const description = this.form.controls.description.value || '';
-      this.language = {
+      this.religion = {
         name: name,
         description: description,
         world: this.worldStorage.getWorld()
       };
       if (!this.isAddMode)
-        this.language.id = this.id;
+        this.religion.id = this.id;
 
-      const observe = this.isAddMode ? this.languageService.create(this.language) : this.languageService.update(this.language);
+      const observe = this.isAddMode ? this.religionService.create(this.religion) : this.religionService.update(this.religion);
       
       observe.subscribe({
           next: result => {
@@ -104,23 +104,22 @@ export class LanguageFormComponent {
             this.alertService.error(message + err.error.error);
           }
         });
-      } else {
+    } else {
         this.validateAllFormFields(this.form);
-      }
     }
+  }
 
   
-    validateAllFormFields(formGroup: FormGroup) {         
-      Object.keys(formGroup.controls).forEach(field => {  
-        const control = formGroup.get(field);             
-        if (control instanceof FormControl) {             
-          control.markAsTouched({ onlySelf: true });
-        } else if (control instanceof FormGroup) {        
-          this.validateAllFormFields(control);            
-        }
-      });
-    }
-
+  validateAllFormFields(formGroup: FormGroup) {         
+    Object.keys(formGroup.controls).forEach(field => {  
+      const control = formGroup.get(field);             
+      if (control instanceof FormControl) {             
+        control.markAsTouched({ onlySelf: true });
+      } else if (control instanceof FormGroup) {        
+        this.validateAllFormFields(control);            
+      }
+    });
+  }
   gotoRedirect() {
     this.router.navigate(['/'+this.redirectUrl]);
   }

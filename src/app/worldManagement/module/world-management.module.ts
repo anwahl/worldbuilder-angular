@@ -15,6 +15,14 @@ import { ActorListComponent } from '../actor/actor-list/actor-list.component';
 import { ActorFormComponent } from '../actor/actor-form/actor-form.component';
 import { LanguageListComponent } from '../language/language-list/language-list.component';
 import { LanguageFormComponent } from '../language/language-form/language-form.component';
+import { ReligionFormComponent } from '../religion/religion-form/religion-form.component';
+import { ReligionListComponent } from '../religion/religion-list/religion-list.component';
+import { SocialClassFormComponent } from '../socialClass/social-class-form/social-class-form.component';
+import { SocialClassListComponent } from '../socialClass/social-class-list/social-class-list.component';
+import { EitherOrRaceCheckDirective } from '../../_directives/either-or-race-check-directive';
+import { EitherOrGenericCheckDirective } from 'src/app/_directives/either-or-generic-check-directive';
+import { RequiredIfGenericDirective } from 'src/app/_directives/required-if-generic-directive';
+import { EitherOrArrayCheckDirective } from 'src/app/_directives/either-or-array-check-directive';
 
 
 @NgModule({
@@ -35,7 +43,15 @@ import { LanguageFormComponent } from '../language/language-form/language-form.c
     ActorListComponent,
     ActorFormComponent,
     LanguageListComponent,
-    LanguageFormComponent
+    LanguageFormComponent,
+    ReligionFormComponent,
+    ReligionListComponent,
+    SocialClassFormComponent,
+    SocialClassListComponent,
+    EitherOrRaceCheckDirective,
+    EitherOrGenericCheckDirective,
+    RequiredIfGenericDirective,
+    EitherOrArrayCheckDirective
   ],
   providers: [ WorldStorageService ]
 })

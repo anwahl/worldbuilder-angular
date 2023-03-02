@@ -1,8 +1,12 @@
 <div class="col-md-12">
   <mat-card>
-    <mat-card-header><mat-card-title>{{ isAddMode ? 'Create New Race' : 'Update ' + race.name }}</mat-card-title></mat-card-header>
     <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
       <table>
+        <tr>
+          <td>
+            <mat-card-header><mat-card-title>{{ isAddMode ? 'Create New Race' : 'Update ' + race.name }}</mat-card-title></mat-card-header>
+          </td>
+      </tr>
         <tr>
           <td>
             <mat-form-field>

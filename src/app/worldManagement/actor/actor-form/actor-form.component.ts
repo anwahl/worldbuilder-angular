@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AbstractControlOptions, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'src/app/_alert';
 import { World } from 'src/app/_model/world';
@@ -8,10 +8,12 @@ import { Language } from '../../model/language';
 import { Race } from '../../model/race';
 import { RaceService } from '../../race/service/race.service';
 import { WorldStorageService } from '../../service/world-storage.service';
-import { raceValidator } from '../../validators/raceValidator';
 import { ActorService } from '../service/actor.service';
 import { forkJoin, switchMap, Observable } from 'rxjs';
 import { LanguageService } from '../../language/service/language.service';
+import { Religion } from '../../model/religion';
+import { ReligionService } from '../../religion/service/religion.service';
+import { of } from 'rxjs';
 
 
 @Component({
@@ -30,6 +32,9 @@ export class ActorFormComponent {
   races: Array<Race>;
   race: Race;
   createRace = false;
+  religions: Array<Religion>;
+  religion: Religion;
+  createReligion = false;
   languagesList: Array<Language>;
   newLanguages: any[] = [];
   languages: Array<Language> = [];
@@ -84,9 +89,25 @@ export class ActorFormComponent {
     }),
       languages: new FormControl<Language[] | null>([]),
       newLanguages: this.formBuilder.array([]),
- }, {
-        validators: [raceValidator()]
-    } as AbstractControlOptions );
+
+      religion: ['', [] ],
+      newReligion: this.formBuilder.group({
+          name: ['', {
+            validators: [
+              Validators.minLength(3),
+              Validators.maxLength(64)
+            ],
+            updateOn: 'blur'
+        }],
+          description: ['', {
+            validators: [
+              Validators.minLength(3),
+              Validators.maxLength(1024)
+            ],
+            updateOn: 'blur'
+        }],
+      }),
+ });
 
 
   constructor(
@@ -97,11 +118,11 @@ export class ActorFormComponent {
         private formBuilder: FormBuilder,
         private worldStorage: WorldStorageService,
         private raceService: RaceService,
+        private religionService: ReligionService,
         private languageService: LanguageService) {
     
     this.redirectUrl = this.router.getCurrentNavigation()?.previousNavigation?.finalUrl?.toString();
   }
-
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
@@ -114,13 +135,17 @@ export class ActorFormComponent {
       this.actorService.findById(this.id).subscribe({
         next: actorData => {
           this.loading = true;
-          this.raceService.findByWorld(this.worldStorage.getWorld()).pipe(
-            switchMap(data => {
-              this.races = data;
-              return this.languageService.findByWorld(this.worldStorage.getWorld())
-            })).subscribe(data => {
-              this.loading = false;
-              this.languagesList = data;
+          const observables = {
+            races: this.raceService.findByWorld(this.worldStorage.getWorld()),
+            religions: this.religionService.findByWorld(this.worldStorage.getWorld()),
+            languages: this.languageService.findByWorld(this.worldStorage.getWorld())
+          };
+          const results = forkJoin(observables);
+          results.subscribe(data => {
+            this.loading = false;
+            this.races = data.races;
+            this.religions = data.religions;
+            this.languagesList = data.languages;
           });
           this.actor = actorData;
           this.form.patchValue({
@@ -128,7 +153,8 @@ export class ActorFormComponent {
             lastName: this.actor.lastName,
             description: this.actor.description,
             race: this.actor.race?.id,
-            languages: this.actor.languages
+            languages: this.actor.languages,
+            religion: this.actor.religion?.id
           });
 
         },
@@ -139,60 +165,81 @@ export class ActorFormComponent {
       });
     } {
       this.loading = true;
-      this.raceService.findByWorld(this.worldStorage.getWorld()).pipe(
-        switchMap(data => {
-          this.races = data;
-          return this.languageService.findByWorld(this.worldStorage.getWorld())
-        })).subscribe(data => {
+      const observables = {races: this.raceService.findByWorld(this.worldStorage.getWorld()),
+                           religions: this.religionService.findByWorld(this.worldStorage.getWorld()),
+                           languages: this.languageService.findByWorld(this.worldStorage.getWorld()) };
+      const results = forkJoin(observables);
+      results.subscribe(data => {
           this.loading = false;
-          this.languagesList = data;
+          this.races = data.races;
+          this.religions = data.religions;
+          this.languagesList = data.languages;
       });
     }
   }
 
-
   async onSubmit() {
-    this.loading = true;
-    const firstName = this.form.controls.firstName.value || '';
-    const lastName = this.form.controls.lastName.value || '';
-    const description = this.form.controls.description.value || '';
-    const race = this.createRace ? this.getRace() : null;
-    this.actor = {
-      firstName: firstName,
-      lastName: lastName,
-      description: description,
-      world: this.worldStorage.getWorld(),
-      languages: this.languages
-    };
-  
-    const raceAction = race ? this.raceService.create(race) : this.raceService.findById(this.form.controls.race.value || '');
-    await this.createLanguages().then(res => {
-      
-      raceAction.pipe(
-        switchMap(result => {
-          this.actor.race = result;
-          this.actor.languages = this.languages;
-          if (this.isAddMode) {
-            return this.actorService.create(this.actor);
-          } else {
-            this.actor.id = this.id;
-            return this.actorService.update(this.actor);
+    if (this.form.valid) {
+      this.loading = true;
+      const firstName = this.form.controls.firstName.value || '';
+      const lastName = this.form.controls.lastName.value || '';
+      const description = this.form.controls.description.value || '';
+      const race = this.createRace ? this.getRace() : null;
+      const religion = this.createReligion ? this.getReligion() : null;
+      this.actor = {
+        firstName: firstName,
+        lastName: lastName,
+        description: description,
+        world: this.worldStorage.getWorld(),
+        languages: this.languages
+      };
+    
+      const raceAction = race ? this.raceService.create(race) : this.raceService.findById(this.form.controls.race.value || '');
+      const religionAction = religion ? this.religionService.create(religion) : (this.form.controls.religion.value ? this.religionService.findById(this.form.controls.religion.value) : of(new Religion()));
+      const observables = {race: raceAction,
+                          religion: religionAction};
+      const results = forkJoin(observables);
+      await this.createLanguages().then(res => {  
+        results.pipe(
+          switchMap(result => {
+            this.actor.race = result.race;
+            this.actor.religion = (Number(result.religion.id) > 0 ? result.religion : undefined);
+            this.actor.languages = this.languages;
+            if (this.isAddMode) {
+              return this.actorService.create(this.actor);
+            } else {
+              this.actor.id = this.id;
+              return this.actorService.update(this.actor);
+            }
+          })
+        ).subscribe({
+          next: result => {
+            this.loading = false;
+            const message = this.isAddMode ? 'Actor saved successfully!' : 'Actor updated successfully!';
+            this.alertService.success(message);
+            this.gotoRedirect();
+          },
+          error: err => {
+            this.loading = false;
+            const message = this.isAddMode ? 'Error creating actor: ' : 'Error updating actor: ';
+            this.alertService.error(message + err.error.error);
           }
-        })
-      ).subscribe({
-        next: result => {
-          this.loading = false;
-          const message = this.isAddMode ? 'Actor saved successfully!' : 'Actor updated successfully!';
-          this.alertService.success(message);
-          this.gotoRedirect();
-        },
-        error: err => {
-          this.loading = false;
-          const message = this.isAddMode ? 'Error creating actor: ' : 'Error updating actor: ';
-          this.alertService.error(message + err.error.error);
-        }
-      });
-    })
+        });
+      })
+    } else {
+      this.validateAllFormFields(this.form);
+    }
+  }
+
+  validateAllFormFields(formGroup: FormGroup) {         
+    Object.keys(formGroup.controls).forEach(field => {  
+      const control = formGroup.get(field);             
+      if (control instanceof FormControl) {             
+        control.markAsTouched({ onlySelf: true });
+      } else if (control instanceof FormGroup) {        
+        this.validateAllFormFields(control);            
+      }
+    });
   }
   
   getRace() {
@@ -204,9 +251,21 @@ export class ActorFormComponent {
     return race;
   }
 
+  getReligion() {
+    const religion = new Religion();
+    religion.description = this.form.controls.newReligion.controls.description.value || '';
+    religion.name = this.form.controls.newReligion.controls.name.value || '';
+    religion.world = this.worldStorage.getWorld();
+    return religion;
+  }
+
   async createLanguages() {
     const languagesFieldAsFormArray = this.languagesFieldAsFormArray;
     const languagesArray = this.form.get('languages')?.value as Array<Language>;
+   
+    languagesArray.forEach(lng => {
+      this.languages.push(lng);
+    });
 
     if (languagesFieldAsFormArray.length) {
       const observables: Observable<Language> = languagesFieldAsFormArray.controls.map((control: { controls: { name: { value: string; }; description: { value: string; }; }; }, index: any) => {
@@ -219,142 +278,11 @@ export class ActorFormComponent {
       const results = forkJoin(observables);
       results.subscribe(lng => this.languages = this.languages.concat(lng));
     }
-  
-    if (languagesArray.length) {
-      const observables = languagesArray.map((lng, index) => {
-        this.languages.push(lng);
-      });
-      forkJoin(observables);
-    }
   }
-
-
 
   compareObjects(o1: any, o2: any): boolean {
     return o1.segName === o2.segName && o1.id === o2.id;
   }
-
-  /*async onSubmit() {
-    this.loading = true;
-    if (this.createRace) {
-      this.race = new Race();
-      this.race.description = this.form.controls.newRace.controls.description.value || '';
-      this.race.name = this.form.controls.newRace.controls.name.value || '';
-      this.race.trait = this.form.controls.newRace.controls.trait.value || '';
-      this.race.world = this.worldStorage.getWorld();
-    } 
-    this.actor.firstName = this.form.controls.firstName.value || '';
-    this.actor.lastName = this.form.controls.firstName.value || '';
-    this.actor.description = this.form.controls.firstName.value || '';
-    this.actor.world = this.worldStorage.getWorld();
-    for (let i = 0; i < this.languagesFieldAsFormArray.length; i++) {
-      let language = new Language();
-      language.name = this.languagesFieldAsFormArray.at(i).controls.name;
-      language.description = this.languagesFieldAsFormArray.at(i).controls.description;
-      await this.languageService.create(language).subscribe({
-        next: result => {
-          this.languages.push(result);
-          for (let i = 0; i < this.form.controls.languages.length; i++) {
-            let language = new Language();
-            let languagesArray = this.form.get('languages') as FormArray;
-            language.name = languagesArray.at(i).value.name;
-            language.description = languagesArray.at(i).value.description
-            this.languageService.create(language).subscribe({
-              next: result => {
-              this.languages.push(result);
-              this.actor.languages = this.languages;
-            }});
-          }
-        }
-      })
-    }
-    if (this.languagesFieldAsFormArray.length == 0) {
-      for (let i = 0; i < this.form.controls.languages.length; i++) {
-        let language = new Language();
-        let languagesArray = this.form.get('languages') as FormArray;
-        language.name = languagesArray.at(i).value.name;
-        language.description = languagesArray.at(i).value.description
-        await this.languageService.create(language).subscribe({
-          next: result => {
-          this.languages.push(result);
-          this.actor.languages = this.languages;
-        }});
-      }
-    }
-    if (this.isAddMode) {
-      if (this.createRace) {
-        this.raceService.create(this.race).subscribe({
-          next: result => { 
-            this.actor.race = result;
-            this.actorService.create(this.actor).subscribe({
-              next: result => { 
-                this.loading = false;
-                this.alertService.success("Actor saved successfully!");
-                this.gotoRedirect() },
-              error: err => {
-                this.loading = false;
-                this.alertService.error("Error creating actor: " + err.error.error);
-              }});
-            this.alertService.success("Race saved successfully!");
-          }, error: err => {
-            this.alertService.error("Error creating race: " + err.error.error);
-          }});
-    } else {
-        this.raceService.findById(this.form.controls.race.value || '').subscribe({
-          next: result => {
-            this.actor.race = result;
-            this.actorService.create(this.actor).subscribe({
-              next: result => {
-                this.loading = false;
-                this.alertService.success("Actor saved successfully!");
-                this.gotoRedirect()
-              },
-              error: err => {
-                this.loading = false;
-                this.alertService.error("Error creating actor: " + err.error.error);
-              }
-            });
-          }, error: err => {
-          this.alertService.error("Error finding race: " + err.error.error);
-        }});
-      }
-    } else {
-      if (this.createRace) {
-        this.raceService.create(this.race).subscribe({
-          next: result => { 
-            this.actor.race = result;
-            this.actorService.update(this.actor).subscribe({
-              next: result => { 
-                this.loading = false;
-                this.alertService.success("Actor updated successfully!");
-                this.gotoRedirect() },
-              error: err => {
-                this.loading = false;
-                this.alertService.error("Error updating actor: " + err.error.error);
-              }});
-            this.alertService.success("Race saved successfully!");
-          }, error: err => {
-            this.alertService.error("Error creating race: " + err.error.error);
-          }});
-    } else {
-      this.raceService.findById(this.form.controls.race.value || '').subscribe({
-        next: result => {
-          this.actor.race = result;
-          this.actorService.update(this.actor).subscribe({
-            next: result => { 
-              this.loading = false;
-              this.alertService.success("Actor updated successfully!");
-              this.gotoRedirect() },
-            error: err => {
-              this.loading = false;
-              this.alertService.error("Error updating actor: " + err.error.error);
-            }});
-          }, error: err => {
-            this.alertService.error("Error finding race: " + err.error.error);
-          }});
-      }
-    }
-  }*/
 
   addLanguage(): void {
     this.languagesFieldAsFormArray.push(this.language());

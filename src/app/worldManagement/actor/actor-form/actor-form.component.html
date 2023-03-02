@@ -1,10 +1,15 @@
 <div class="col-md-12">
     <mat-card>
-      <mat-card-header><mat-card-title>{{ isAddMode ? 'Create New Actor' : 'Update ' + actor.firstName }}</mat-card-title></mat-card-header>
-      <form [formGroup]="form">
+      <form [formGroup]="form" [appEitherOrRaceCheck]="['race', 'newRace']" [appEitherOrArrayCheck]="['languages', 'newLanguages']" [appRequiredIfGenericCheck]="['newReligion',createReligion]">
         <table>
-          <tr>
+        <tr>
             <td>
+                <mat-card-header><mat-card-title>{{ isAddMode ? 'Create New Actor' : 'Update ' + actor.firstName }}</mat-card-title></mat-card-header>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h5>Details</h5>
                 <mat-form-field>
                     <mat-label>First Name</mat-label>
                     <input matInput type="text" name="firstName" placeholder="Enter actor's first name" formControlName="firstName" #firstName>
@@ -32,9 +37,10 @@
             </td>
           </tr>
           <mat-divider></mat-divider>
+          <h5>Race</h5>
           <tr>
           </tr><tr *ngIf="!createRace"><td>
-                <button mat-raised-button color="primary" (click)="createRace=true">Create New</button>
+                <button mat-raised-button color="primary" (click)="createRace=true;form.get('race')?.setValue(null)">Create New</button>
             </td></tr>
             <tr *ngIf="!createRace">
             <td>
@@ -45,20 +51,25 @@
                             {{race.name}}
                         </mat-option>
                     </mat-select>
-                    <mat-error *ngIf="form.get('race')?.hasError('raceError')">Race is required</mat-error>
+                    <mat-error *ngIf="form.get('race')?.hasError('eitherOrRace')">Race is required</mat-error>
                 </mat-form-field>
             </td>
             </tr>
             <tr *ngIf="createRace">
-                <button mat-raised-button color="primary" (click)="createRace=false">Use Old Race</button>
+                <button mat-raised-button color="primary" (click)="createRace=false;
+                                                                form.get('newRace')?.get('name')?.setValue('');
+                                                                form.get('newRace')?.get('description')?.setValue('');
+                                                                form.get('newRace')?.get('trait')?.setValue('');">
+                 Use Old Race
+                </button>
             </tr>
-            <span  *ngIf="createRace" formGroupName="newRace">
+            <span  *ngIf="createRace" formGroupName="newRace"  >
                 <tr>
                     <td>
                         <mat-form-field >
                             <mat-label>Name</mat-label>
                             <input matInput type="text" name="name" placeholder="Enter race's name" formControlName="name" #name>
-                            <mat-error *ngIf="form.get('newRace')?.get('name')?.hasError('raceError')">Name is required</mat-error>
+                            <mat-error *ngIf="form.get('newRace')?.get('name')?.hasError('eitherOrRace')">Name is required</mat-error>
                             <mat-error *ngIf="form.get('newRace')?.get('name')?.hasError('minlength')">Name must be at least 3 characters</mat-error>
                             <mat-error *ngIf="form.get('newRace')?.get('name')?.hasError('maxlength')">Name must be at most 64 characters</mat-error>
                         </mat-form-field>
@@ -69,7 +80,7 @@
                         <mat-form-field>
                             <mat-label>Description</mat-label>
                             <textarea matInput type="text" name="description" placeholder="Enter race's description" formControlName="description" #description></textarea>
-                            <mat-error *ngIf="form.get('newRace')?.get('description')?.hasError('raceError')">Description is required</mat-error>
+                            <mat-error *ngIf="form.get('newRace')?.get('description')?.hasError('eitherOrRace')">Description is required</mat-error>
                             <mat-error *ngIf="form.get('newRace')?.get('description')?.hasError('minlength')">Description must be at least 3 characters</mat-error>
                             <mat-error *ngIf="form.get('newRace')?.get('description')?.hasError('maxlength')">Description must be at most 1024 characters</mat-error>
                         </mat-form-field>
@@ -78,7 +89,7 @@
                         <mat-form-field>
                             <mat-label>Trait</mat-label>
                             <textarea matInput type="text" name="trait" placeholder="Enter race's trait" formControlName="trait" #trait></textarea>
-                            <mat-error *ngIf="form.get('newRace')?.get('trait')?.hasError('raceError')">Trait is required</mat-error>
+                            <mat-error *ngIf="form.get('newRace')?.get('trait')?.hasError('eitherOrRace')">Trait is required</mat-error>
                             <mat-error *ngIf="form.get('newRace')?.get('trait')?.hasError('minlength')">Trait must be at least 3 characters</mat-error>
                             <mat-error *ngIf="form.get('newRace')?.get('trait')?.hasError('maxlength')">Trait must be at most 1024 characters</mat-error>
                         </mat-form-field>
@@ -86,15 +97,16 @@
                 </tr>
             </span>
             <mat-divider></mat-divider>
+            <h5>Languages</h5>
             <tr>
                 <mat-form-field>
                     <mat-label>Languages</mat-label>
-                    <mat-select name="languages" required #languages [compareWith]="compareObjects" formControlName="languages" multiple>
+                    <mat-select name="languages" #languages [compareWith]="compareObjects" formControlName="languages" multiple>
                         <mat-option *ngFor="let language of languagesList" [value]="language">
                             {{language.name}}
                         </mat-option>
                     </mat-select>
-                    <mat-error *ngIf="form.get('language')?.hasError('required')">At least one language is required</mat-error>
+                    <mat-error *ngIf="form.get('languages')?.hasError('eitherOr')">At least one language is required</mat-error>
                 </mat-form-field>
             </tr>
             <tr *ngFor="let control of languagesFieldAsFormArray.controls ;let i = index;" formArrayName='newLanguages' >
@@ -103,7 +115,7 @@
                         <mat-form-field>
                             <mat-label>Name</mat-label>
                             <input matInput type="text" name="name" placeholder="Enter language's name" formControlName="name" #name>
-                            <mat-error *ngIf="control.get('name')?.hasError('raceError')">Name is required</mat-error>
+                            <mat-error *ngIf="control.get('name')?.hasError('required')">Name is required</mat-error>
                             <mat-error *ngIf="control.get('name')?.hasError('minlength')">Name must be at least 3 characters</mat-error>
                             <mat-error *ngIf="control.get('name')?.hasError('maxlength')">Name must be at most 64 characters</mat-error>
                         </mat-form-field>
@@ -112,7 +124,7 @@
                         <mat-form-field>
                             <mat-label>Description</mat-label>
                             <textarea matInput type="text" name="description" placeholder="Enter language's description" formControlName="description" #description></textarea>
-                            <mat-error *ngIf="control.get('description')?.hasError('raceError')">Description is required</mat-error>
+                            <mat-error *ngIf="control.get('description')?.hasError('required')">Description is required</mat-error>
                             <mat-error *ngIf="control.get('description')?.hasError('minlength')">Description must be at least 3 characters</mat-error>
                             <mat-error *ngIf="control.get('description')?.hasError('maxlength')">Description must be at most 1024 characters</mat-error>
                         </mat-form-field>
@@ -126,6 +138,58 @@
                 <button mat-raised-button color="primary" (click)="addLanguage()">Add New Language</button>
             </tr>
             <mat-divider></mat-divider>
+            <h5>Religion</h5>
+        <tr>
+        </tr>
+        <tr *ngIf="!createReligion">
+            <td>
+                <button mat-raised-button color="primary" (click)="createReligion=true;
+                                                            form.get('religion')?.setValue(null);">Create New</button>
+            </td>
+        </tr>
+        <tr *ngIf="!createReligion">
+            <td>
+                <mat-form-field>
+                    <mat-label>Religion</mat-label>
+                    <mat-select name="religion" #religion formControlName="religion">
+                        <mat-option>---</mat-option>
+                        <mat-option *ngFor="let religion of religions" [value]="religion.id">
+                            {{religion.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </td>
+        </tr>
+        <tr *ngIf="createReligion">
+            <button mat-raised-button color="primary" (click)="createReligion=false;
+                                                            form.get('newReligion')?.get('name')?.setValue('');
+                                                            form.get('newReligion')?.get('description')?.setValue('');">Use Old Religion</button>
+        </tr>
+        <span  *ngIf="createReligion" formGroupName="newReligion">
+            <tr>
+                <td>
+                    <mat-form-field >
+                        <mat-label>Name</mat-label>
+                        <input matInput type="text" name="name" placeholder="Enter religion's name" formControlName="name" #name>
+                        <mat-error *ngIf="form.get('newReligion')?.get('name')?.hasError('requiredIf')">Name is required</mat-error>
+                        <mat-error *ngIf="form.get('newReligion')?.get('name')?.hasError('minlength')">Name must be at least 3 characters</mat-error>
+                        <mat-error *ngIf="form.get('newReligion')?.get('name')?.hasError('maxlength')">Name must be at most 64 characters</mat-error>
+                    </mat-form-field>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <mat-form-field>
+                        <mat-label>Description</mat-label>
+                        <textarea matInput type="text" name="description" placeholder="Enter religion's description" formControlName="description" #description></textarea>
+                        <mat-error *ngIf="form.get('newReligion')?.get('description')?.hasError('requiredIf')">Description is required</mat-error>
+                        <mat-error *ngIf="form.get('newReligion')?.get('description')?.hasError('minlength')">Description must be at least 3 characters</mat-error>
+                        <mat-error *ngIf="form.get('newReligion')?.get('description')?.hasError('maxlength')">Description must be at most 1024 characters</mat-error>
+                    </mat-form-field>
+                </td>
+            </tr>
+        </span>
+        <mat-divider></mat-divider>
         </table>
         <div class="form-group">
           <button mat-raised-button color="accent" (click)="onSubmit()" type="submit">Submit</button>

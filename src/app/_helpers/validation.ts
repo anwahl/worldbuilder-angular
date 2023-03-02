@@ -1,4 +1,4 @@
-import { FormGroup } from "@angular/forms";
+import { FormArray, FormGroup } from "@angular/forms";
 
 export class Validation {
     static match(controlName: string, checkControlName: string) {
@@ -19,4 +19,93 @@ export class Validation {
         }
       };
     }
+
+    static eitherOrRace(controlName: string, checkControlName: string) {
+      return (formGroup: FormGroup) => {
+        const control = formGroup.controls[controlName];
+        const checkControl = formGroup.controls[checkControlName];
+  
+        if ((!control?.value && (!checkControl?.get('name')?.value || !checkControl?.get('description')?.value || !checkControl?.get('trait')?.value))) {
+          checkControl?.get('name')?.setErrors({ eitherOrRace: {value:true} });
+          checkControl?.get('description')?.setErrors({ eitherOrRace: {value:true} });
+          checkControl?.get('trait')?.setErrors({ eitherOrRace: {value:true} });
+          control?.setErrors({ eitherOrRace: {value:true} });
+          return { eitherOrRace: {value:true} };
+        } else {
+          checkControl?.get('name')?.setErrors(null);
+          checkControl?.get('description')?.setErrors(null);
+          checkControl?.get('trait')?.setErrors(null);
+          control?.setErrors(null);
+          return null;
+        }
+      };
+    }
+
+    static eitherOrGeneric(controlName: string, checkControlName: string) {
+      return (formGroup: FormGroup) => {
+        const control = formGroup.controls[controlName];
+        const checkControl = formGroup.controls[checkControlName];
+  
+        if ((!control?.value && (!checkControl?.get('name')?.value || !checkControl?.get('description')?.value))) {
+          checkControl?.get('name')?.setErrors({ eitherOr: {value:true} });
+          checkControl?.get('description')?.setErrors({ eitherOr: {value:true} });
+          control?.setErrors({ eitherOr: {value:true} });
+          return { eitherOr: {value:true} };
+        } else {
+          checkControl?.get('name')?.setErrors(null);
+          checkControl?.get('description')?.setErrors(null);
+          control?.setErrors(null);
+          return null;
+        }
+      };
+    }
+
+    static eitherOrArray(controlName: string, checkControlName: string) {
+      return (formGroup: FormGroup) => {
+        const control = formGroup.controls[controlName];
+        const checkControl = formGroup.controls[checkControlName] as FormArray;
+        if (checkControl?.controls.length > 0) {
+          checkControl?.setErrors(null);
+          control?.setErrors(null);
+          return null;
+        } else if (control?.value.length == 0) {
+          control?.setErrors({ eitherOr: {value:true} });
+          return { eitherOr: {value:true} };
+        } else {
+          return null;
+        }
+      };
+    }
+
+    static requiredIfGeneric(controlName: string|boolean, check: string|boolean) {
+      return (formGroup: FormGroup) => {
+        const control = formGroup.controls[String(controlName)];
+        const checkControl = Boolean(check);
+  
+        if (checkControl) {
+          if(!control?.get('name')?.value && !control?.get('description')?.value) {
+            control?.get('name')?.setErrors({ requiredIf: {value:true} });
+            control?.get('description')?.setErrors({ requiredIf: {value:true} });
+            return { requiredIf: {value:true} };
+          } else if (!control?.get('name')?.value) {
+            control?.get('description')?.setErrors(null);
+            control?.get('name')?.setErrors({ requiredIf: {value:true} });
+            return { requiredIf: {value:true} };
+          } else if (!control?.get('description')?.value) {
+            control?.get('name')?.setErrors(null);
+            control?.get('description')?.setErrors({ requiredIf: {value:true} });
+            return { requiredIf: {value:true} };
+          } else {
+            control?.get('name')?.setErrors(null);
+            control?.get('description')?.setErrors(null);
+            return null;
+          }
+        } else {
+          control?.get('name')?.setErrors(null);
+          control?.get('description')?.setErrors(null);
+          return null;
+        }
+      };
+    }
+    
   }

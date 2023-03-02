@@ -9,6 +9,8 @@ import { ActorFormComponent } from '../actor/actor-form/actor-form.component';
 import { ActorListComponent } from '../actor/actor-list/actor-list.component';
 import { LanguageFormComponent } from '../language/language-form/language-form.component';
 import { LanguageListComponent } from '../language/language-list/language-list.component';
+import { ReligionFormComponent } from '../religion/religion-form/religion-form.component';
+import { ReligionListComponent } from '../religion/religion-list/religion-list.component';
 
 
 const worldManagementRoutes: Routes = [
@@ -55,6 +57,18 @@ const worldManagementRoutes: Routes = [
       {
         path: 'languages',
         component: LanguageListComponent
+      },
+      {
+        path: 'religion',
+        component: ReligionFormComponent
+      },
+      {
+        path: 'religion/:id',
+        component: ReligionFormComponent
+      },
+      {
+        path: 'religions',
+        component: ReligionListComponent
       },
       {
         path: '',
