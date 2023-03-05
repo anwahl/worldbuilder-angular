@@ -7,7 +7,7 @@ export class Geography {
     name: string;
     description: string;
     type: string;
-    climate: string;
-    resources: Array<Resource>
-    parentGeography: Geography;
+    climate?: string;
+    resources?: Array<Resource>
+    parentGeography?: Geography;
 }

@@ -36,6 +36,7 @@ export class ForgotPasswordComponent {
     }
     
     onSubmit() {
+      this.form.email = this.form.email.trim();
       this.loading = true;
       this.authService.resetPassword(this.form.email).subscribe({next: data => {
         this.loading = false;

@@ -7,8 +7,8 @@ export class Region {
     world: World;
     name: string;
     description: string;
-    municipality: string;
-    jurisdiction: Region;
-    geography: Geography;
-    politicalSystem: PoliticalSystem;
+    municipality?: string;
+    jurisdiction?: Region;
+    geography?: Geography;
+    politicalSystem?: PoliticalSystem;
 }

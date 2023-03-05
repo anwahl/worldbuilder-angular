@@ -49,6 +49,8 @@ export class WorldFormComponent {
   }
 
   onSubmit() {
+    this.world.name = this.world.name.trim();
+    this.world.description = this.world.description.trim();
     if (this.isAddMode) {
       this.worldService.create(this.world).subscribe({
         next: result => { 

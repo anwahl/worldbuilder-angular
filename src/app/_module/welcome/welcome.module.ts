@@ -18,6 +18,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
+import { NoWhitespaceDirective } from 'src/app/_directives/no-whitespace-directive';
 
 
 
@@ -26,7 +27,8 @@ import { MatDividerModule } from '@angular/material/divider';
 @NgModule({
   declarations: [
     ModalComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    NoWhitespaceDirective
   ],
   imports: [
     CommonModule,
@@ -65,7 +67,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatToolbarModule,
     MatSnackBarModule,
     MatSelectModule,
-    MatDividerModule
+    MatDividerModule,
+    NoWhitespaceDirective
   ],
 })
 export class WelcomeModule { }

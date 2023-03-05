@@ -23,6 +23,16 @@ import { EitherOrRaceCheckDirective } from '../../_directives/either-or-race-che
 import { EitherOrGenericCheckDirective } from 'src/app/_directives/either-or-generic-check-directive';
 import { RequiredIfGenericDirective } from 'src/app/_directives/required-if-generic-directive';
 import { EitherOrArrayCheckDirective } from 'src/app/_directives/either-or-array-check-directive';
+import { RegionListComponent } from '../region/region-list/region-list.component';
+import { RegionFormComponent } from '../region/region-form/region-form.component';
+import { PoliticalSystemFormComponent } from '../politicalSystem/political-system-form/political-system-form.component';
+import { PoliticalSystemListComponent } from '../politicalSystem/political-system-list/political-system-list.component';
+import { GeographyListComponent } from '../geography/geography-list/geography-list.component';
+import { GeographyFormComponent } from '../geography/geography-form/geography-form.component';
+import { ResourceFormComponent } from '../resource/resource-form/resource-form.component';
+import { ResourceListComponent } from '../resource/resource-list/resource-list.component';
+import { EitherOrGeographyCheckDirective } from 'src/app/_directives/either-or-geography-check-directive';
+import { RequiredIfPoliticalSystemDirective } from 'src/app/_directives/required-if-political-system-directive';
 
 
 @NgModule({
@@ -51,7 +61,17 @@ import { EitherOrArrayCheckDirective } from 'src/app/_directives/either-or-array
     EitherOrRaceCheckDirective,
     EitherOrGenericCheckDirective,
     RequiredIfGenericDirective,
-    EitherOrArrayCheckDirective
+    EitherOrArrayCheckDirective,
+    RegionListComponent,
+    RegionFormComponent,
+    PoliticalSystemFormComponent,
+    PoliticalSystemListComponent,
+    GeographyListComponent,
+    GeographyFormComponent,
+    ResourceFormComponent,
+    ResourceListComponent,
+    EitherOrGeographyCheckDirective,
+    RequiredIfPoliticalSystemDirective
   ],
   providers: [ WorldStorageService ]
 })

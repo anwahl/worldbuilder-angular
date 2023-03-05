@@ -33,6 +33,10 @@ export class RegisterComponent implements OnInit {
     if (this.agreementForm.get('privacy')?.getRawValue() == true
       && this.agreementForm.get('terms')?.getRawValue() == true) {
       this.loading = true;
+      this.user.email = this.user.email.trim();
+      this.user.password = this.user.password.trim();
+      this.user.username = this.user.username.trim();
+      
       this.authService.register(this.user).subscribe({
         next: data => {
           this.loading = false;

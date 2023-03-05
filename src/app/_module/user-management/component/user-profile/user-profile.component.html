@@ -11,7 +11,7 @@
             [appMatchEmail]="['newEmail', 'confirmEmail']">
             <div class="form-group">
                 <label for="email">New Email</label>
-                <input type="email" class="form-control" name="newEmail" [(ngModel)]="profile.newEmail" required email
+                <input type="email" class="form-control" name="newEmail" [(ngModel)]="profile.newEmail" noWhitespace email
                     #newEmail="ngModel" [ngClass]="{ 'is-invalid': f.submitted && newEmail.errors }" />
                 <div class="invalid-feedback" *ngIf="newEmail.errors && f.submitted">
                     <div *ngIf="newEmail.errors['required']">Email is required</div>
@@ -22,7 +22,7 @@
             </div>
             <div class="form-group">
                 <label for="confirmEmail">Confirm Email</label>
-                <input type="email" class="form-control" name="confirmEmail" [(ngModel)]="profile.confirmEmail" required
+                <input type="email" class="form-control" name="confirmEmail" [(ngModel)]="profile.confirmEmail" noWhitespace
                     email #confirmEmail="ngModel" [ngClass]="{ 'is-invalid': f.submitted && confirmEmail.errors }" />
                 <div class="invalid-feedback" *ngIf="confirmEmail.errors && f.submitted">
                     <div *ngIf="confirmEmail.errors['required']">Confirm Email is required</div>
@@ -41,7 +41,7 @@
             <div class="form-group">
                 <label for="oldPassword">Old Password</label>
                 <input type="password" class="form-control" name="oldPassword" [(ngModel)]="profile.oldPassword"
-                    required minlength="6" #oldPassword="ngModel"
+                noWhitespace minlength="6" #oldPassword="ngModel"
                     [ngClass]="{ 'is-invalid': pw.submitted && oldPassword.errors }" />
                 <div class="invalid-feedback" *ngIf="oldPassword.errors && pw.submitted">
                     <div *ngIf="oldPassword.errors['required']">Password is required</div>
@@ -52,7 +52,7 @@
                 <div class="form-group">
                     <label for="newPassword">New Password</label>
                     <input type="password" class="form-control" name="newPassword" [(ngModel)]="profile.newPassword"
-                        required minlength="6" #newPassword="ngModel"
+                    noWhitespace minlength="6" #newPassword="ngModel"
                         [ngClass]="{ 'is-invalid': pw.submitted && newPassword.errors }" />
                     <div class="invalid-feedback" *ngIf="newPassword.errors && pw.submitted">
                         <div *ngIf="newPassword.errors['required']">Password is required</div>
@@ -64,7 +64,7 @@
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password</label>
                     <input type="password" class="form-control" name="confirmPassword"
-                        [(ngModel)]="profile.confirmPassword" required minlength="6" #confirmPassword="ngModel"
+                        [(ngModel)]="profile.confirmPassword" noWhitespace minlength="6" #confirmPassword="ngModel"
                         [ngClass]="{ 'is-invalid': pw.submitted && confirmPassword.errors }" />
                     <div class="invalid-feedback" *ngIf="confirmPassword.errors && pw.submitted">
                         <div *ngIf="confirmPassword.errors['required']">Confirm Password is required</div>

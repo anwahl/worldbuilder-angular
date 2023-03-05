@@ -181,9 +181,9 @@ export class ActorFormComponent {
   async onSubmit() {
     if (this.form.valid) {
       this.loading = true;
-      const firstName = this.form.controls.firstName.value || '';
-      const lastName = this.form.controls.lastName.value || '';
-      const description = this.form.controls.description.value || '';
+      const firstName = this.form.controls.firstName.value?.trim() || '';
+      const lastName = this.form.controls.lastName.value?.trim() || '';
+      const description = this.form.controls.description.value?.trim() || '';
       const race = this.createRace ? this.getRace() : null;
       const religion = this.createReligion ? this.getReligion() : null;
       this.actor = {
@@ -244,17 +244,17 @@ export class ActorFormComponent {
   
   getRace() {
     const race = new Race();
-    race.description = this.form.controls.newRace.controls.description.value || '';
-    race.name = this.form.controls.newRace.controls.name.value || '';
-    race.trait = this.form.controls.newRace.controls.trait.value || '';
+    race.description = this.form.controls.newRace.controls.description.value?.trim() || '';
+    race.name = this.form.controls.newRace.controls.name.value?.trim() || '';
+    race.trait = this.form.controls.newRace.controls.trait.value?.trim() || '';
     race.world = this.worldStorage.getWorld();
     return race;
   }
 
   getReligion() {
     const religion = new Religion();
-    religion.description = this.form.controls.newReligion.controls.description.value || '';
-    religion.name = this.form.controls.newReligion.controls.name.value || '';
+    religion.description = this.form.controls.newReligion.controls.description.value?.trim() || '';
+    religion.name = this.form.controls.newReligion.controls.name.value?.trim() || '';
     religion.world = this.worldStorage.getWorld();
     return religion;
   }
@@ -270,8 +270,8 @@ export class ActorFormComponent {
     if (languagesFieldAsFormArray.length) {
       const observables: Observable<Language> = languagesFieldAsFormArray.controls.map((control: { controls: { name: { value: string; }; description: { value: string; }; }; }, index: any) => {
         const language = new Language();
-        language.name = control.controls.name.value;
-        language.description = control.controls.description.value;
+        language.name = control.controls.name.value?.trim();
+        language.description = control.controls.description.value?.trim();
         language.world = this.worldStorage.getWorld();
         return this.languageService.create(language);
       });

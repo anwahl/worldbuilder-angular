@@ -1,0 +1,276 @@
+<div class="col-md-12">
+    <mat-card>
+      <form [formGroup]="form" [appEitherOrGeographyCheck]="['geography', 'newGeography']"  [appRequiredIfPoliticalSystemCheck]="['newPoliticalSystem',createPoliticalSystem]">
+        <table>
+          <tr>
+            <td>
+              <mat-card-header><mat-card-title>{{ isAddMode ? 'Create New Region' : 'Update ' + region.name }}</mat-card-title></mat-card-header>
+            </td>
+          </tr>
+          <tr>
+            <td>
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input matInput type="text" name="name" placeholder="Enter region's name" formControlName="name" #name>
+                    <mat-error *ngIf="form.get('name')?.hasError('required')">Name is required</mat-error>
+                    <mat-error *ngIf="form.get('name')?.hasError('minlength')">Name must be at least 3 characters</mat-error>
+                    <mat-error *ngIf="form.get('name')?.hasError('maxlength')">Name must be at most 64 characters</mat-error>
+                </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field>
+                <mat-label>Description</mat-label>
+                <textarea matInput name="description" placeholder="Enter region's description" #description formControlName="description"></textarea>
+                  <mat-error *ngIf="form.get('description')?.hasError('required')">Description is required</mat-error>
+                  <mat-error *ngIf="form.get('description')?.hasError('minlength')">Description be at least 3 characters</mat-error>
+                  <mat-error *ngIf="form.get('description')?.hasError('maxlength')">Description be at most 1024 characters</mat-error>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+                <mat-form-field >
+                    <mat-label>Municipality</mat-label>
+                    <mat-select name="municipality" #municipality formControlName="municipality">
+                        <mat-option></mat-option>
+                        <mat-option *ngFor="let municipality of municipalities" [value]="municipality">
+                            {{((municipality[0].toUpperCase() + municipality.substr(1).toLowerCase()).replaceAll('_',' '))}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </td>
+            </tr>
+            <tr>
+                <td>
+                    <mat-form-field >
+                        <mat-label>Jurisdiction</mat-label>
+                        <mat-select name="jurisdiction" #jurisdiction formControlName="jurisdiction">
+                            <mat-option></mat-option>
+                            <mat-option *ngFor="let jurisdiction of jurisdictions" [value]="jurisdiction.id">
+                                {{jurisdiction.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </td>
+            </tr>
+            <mat-divider></mat-divider>
+            <h5>Geography</h5>
+            <tr>
+            </tr><tr *ngIf="!createGeography"><td>
+                    <button mat-raised-button color="primary" (click)="createGeography=true;form.get('geography')?.setValue(null)">Create New</button>
+                </td></tr>
+            <tr *ngIf="!createGeography">
+                <td>
+                    <mat-form-field>
+                        <mat-label>Geography</mat-label>
+                        <mat-select name="geography" required #geography formControlName="geography">
+                            <mat-option *ngFor="let geography of geographies" [value]="geography.id">
+                                {{geography.name}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="form.get('geography')?.hasError('eitherOrGeography')">Geography is required</mat-error>
+                    </mat-form-field>
+                </td>
+            </tr>
+            <tr *ngIf="createGeography">
+                <button mat-raised-button color="primary"
+                    (click)="createGeography=false;
+                                                                                form.get('newGeography')?.get('name')?.setValue('');
+                                                                                form.get('newGeography')?.get('description')?.setValue('');
+                                                                                form.get('newGeography')?.get('type')?.setValue('');">
+                    Use Old Geography
+                </button>
+            </tr>
+            <span *ngIf="createGeography" formGroupName="newGeography">
+                <tr>
+                    <td>
+                        <mat-form-field>
+                            <mat-label>Name</mat-label>
+                            <input matInput type="text" name="name" placeholder="Enter geography's name" formControlName="name"
+                                #name>
+                            <mat-error *ngIf="form.get('newGeography')?.get('name')?.hasError('eitherOrGeography')">Name is
+                                required</mat-error>
+                            <mat-error *ngIf="form.get('newGeography')?.get('name')?.hasError('minlength')">Name must be at least 3
+                                characters</mat-error>
+                            <mat-error *ngIf="form.get('newGeography')?.get('name')?.hasError('maxlength')">Name must be at most 64
+                                characters</mat-error>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field>
+                            <mat-label>Description</mat-label>
+                            <textarea matInput type="text" name="description" placeholder="Enter geography's description"
+                                formControlName="description" #description></textarea>
+                            <mat-error
+                                *ngIf="form.get('newGeography')?.get('description')?.hasError('eitherOrGeography')">Description is
+                                required</mat-error>
+                            <mat-error *ngIf="form.get('newGeography')?.get('description')?.hasError('minlength')">Description must
+                                be at least 3 characters</mat-error>
+                            <mat-error *ngIf="form.get('newGeography')?.get('description')?.hasError('maxlength')">Description must
+                                be at most 1024 characters</mat-error>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field>
+                            <mat-label>Type</mat-label>
+                            <mat-select name="type" #type formControlName="type">
+                                <mat-option *ngFor="let type of geoTypes" [value]="type">
+                                    {{((type[0].toUpperCase() + type.substr(1).toLowerCase()).replaceAll('_',' '))}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error
+                            *ngIf="form.get('newGeography')?.get('description')?.hasError('eitherOrGeography')">Type is
+                            required</mat-error>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field>
+                            <mat-label>Climate</mat-label>
+                            <mat-select name="climate" #climate formControlName="climate">
+                                <mat-option></mat-option>
+                                <mat-option *ngFor="let climate of climates" [value]="climate">
+                                    {{((climate[0].toUpperCase() + climate.substr(1).toLowerCase()).replaceAll('_','
+                                    ')).replace('climate','')}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field>
+                            <mat-label>Parent Geography</mat-label>
+                            <mat-select name="parentGeography" #parentGeography formControlName="parentGeography">
+                                <mat-option *ngFor="let parentGeography of geographies" [value]="parentGeography.id">
+                                    {{parentGeography.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <mat-divider></mat-divider>
+                <h5>Resources</h5>
+                <tr>
+                    <td>
+                        <mat-form-field>
+                            <mat-label>Resources</mat-label>
+                            <mat-select name="resources" #resources [compareWith]="compareObjects" formControlName="resources" multiple>
+                                <mat-option *ngFor="let resource of resourcesList" [value]="resource">
+                                    {{resource.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tbody formArrayName='newResources'>
+                    <tr *ngFor="let control of resourcesFieldAsFormArray.controls ;let i = index;" [formGroupName]="i">
+                      <td>
+                        <mat-form-field>
+                          <mat-label>Name</mat-label>
+                          <input matInput type="text" name="name" placeholder="Enter resource's name" formControlName="name" #name>
+                          <mat-error *ngIf="control.get('name')?.hasError('required')">Name is required</mat-error>
+                          <mat-error *ngIf="control.get('name')?.hasError('minlength')">Name must be at least 3 characters</mat-error>
+                          <mat-error *ngIf="control.get('name')?.hasError('maxlength')">Name must be at most 64 characters</mat-error>
+                        </mat-form-field>
+                      </td>
+                      <td>
+                        <mat-form-field>
+                          <mat-label>Description</mat-label>
+                          <textarea matInput type="text" name="description" placeholder="Enter resource's description" formControlName="description" #description></textarea>
+                          <mat-error *ngIf="control.get('description')?.hasError('required')">Description is required</mat-error>
+                          <mat-error *ngIf="control.get('description')?.hasError('minlength')">Description must be at least 3 characters</mat-error>
+                          <mat-error *ngIf="control.get('description')?.hasError('maxlength')">Description must be at most 1024 characters</mat-error>
+                        </mat-form-field>
+                      </td>
+                      <td>
+                        <button mat-raised-button color="primary" (click)="removeResource(i)">Remove</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                <tr>
+                    <td>
+                        <button mat-raised-button color="primary" (click)="addResource()">Add New Resource</button>
+                    </td>
+                </tr>
+                </span>
+                <mat-divider></mat-divider>
+                <h5>Political System</h5>
+            <tr>
+            </tr>
+            <tr *ngIf="!createPoliticalSystem">
+                <td>
+                    <button mat-raised-button color="primary" (click)="createPoliticalSystem=true;
+                                                                form.get('politicalSystem')?.setValue(null);">Create New</button>
+                </td>
+            </tr>
+            <tr *ngIf="!createPoliticalSystem">
+                <td>
+                    <mat-form-field>
+                        <mat-label>PoliticalSystem</mat-label>
+                        <mat-select name="politicalSystem" #politicalSystem formControlName="politicalSystem">
+                            <mat-option></mat-option>
+                            <mat-option *ngFor="let politicalSystem of politicalSystems" [value]="politicalSystem.id">
+                                {{politicalSystem.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </td>
+            </tr>
+            <tr *ngIf="createPoliticalSystem">
+                <button mat-raised-button color="primary" (click)="createPoliticalSystem=false;
+                                                                form.get('newPoliticalSystem')?.get('name')?.setValue('');
+                                                                form.get('newPoliticalSystem')?.get('description')?.setValue('');">Use Old PoliticalSystem</button>
+            </tr>
+            <span  *ngIf="createPoliticalSystem" formGroupName="newPoliticalSystem">
+                <tr>
+                    <td>
+                        <mat-form-field >
+                            <mat-label>Name</mat-label>
+                            <input matInput type="text" name="name" placeholder="Enter politicalSystem's name" formControlName="name" #name>
+                            <mat-error *ngIf="form.get('newPoliticalSystem')?.get('name')?.hasError('requiredIf')">Name is required</mat-error>
+                            <mat-error *ngIf="form.get('newPoliticalSystem')?.get('name')?.hasError('minlength')">Name must be at least 3 characters</mat-error>
+                            <mat-error *ngIf="form.get('newPoliticalSystem')?.get('name')?.hasError('maxlength')">Name must be at most 64 characters</mat-error>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field>
+                            <mat-label>Description</mat-label>
+                            <textarea matInput type="text" name="description" placeholder="Enter politicalSystem's description" formControlName="description" #description></textarea>
+                            <mat-error *ngIf="form.get('newPoliticalSystem')?.get('description')?.hasError('requiredIf')">Description is required</mat-error>
+                            <mat-error *ngIf="form.get('newPoliticalSystem')?.get('description')?.hasError('minlength')">Description must be at least 3 characters</mat-error>
+                            <mat-error *ngIf="form.get('newPoliticalSystem')?.get('description')?.hasError('maxlength')">Description must be at most 1024 characters</mat-error>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field>
+                            <mat-label>Type</mat-label>
+                            <mat-select name="type" #type formControlName="type">
+                                <mat-option *ngFor="let type of psTypes" [value]="type">
+                                    {{((type[0].toUpperCase() + type.substr(1).toLowerCase()).replaceAll('_',' '))}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </span>
+            <mat-divider></mat-divider>
+        </table>
+        <div class="form-group">
+          <button mat-raised-button color="accent" (click)="onSubmit()" type="submit">Submit</button>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+  <ngx-loading [show]="loading"></ngx-loading>

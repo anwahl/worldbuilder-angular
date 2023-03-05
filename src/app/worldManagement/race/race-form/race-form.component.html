@@ -12,7 +12,7 @@
             <mat-form-field>
               <label for="name">Name</label>
               <input matInput type="text" [(ngModel)]="race.name" class="form-control" id="name" name="name"
-                minlength="3" maxlength="64" placeholder="Enter race's name" required #name="ngModel"
+                minlength="3" maxlength="64" placeholder="Enter race's name" noWhitespace #name="ngModel"
                 [ngClass]="{ 'is-invalid': f.submitted && name.errors }">
               <div class="invalid-feedback" *ngIf="f.submitted && name.errors">
                 <div *ngIf="name.errors['required']">Name is required</div>
@@ -27,7 +27,7 @@
             <mat-form-field>
               <label for="description">Description</label>
               <textarea matInput type="textarea" [(ngModel)]="race.description" class="form-control" id="description"
-                name="description" minlength="3" maxlength="1024" placeholder="Enter race's description" required
+                name="description" minlength="3" maxlength="1024" placeholder="Enter race's description" noWhitespace
                 #description="ngModel" [ngClass]="{ 'is-invalid': f.submitted && description.errors }"></textarea>
               <div class="invalid-feedback" *ngIf="description.errors && f.submitted">
                 <div *ngIf="description.errors['required']">Description is required</div>
@@ -38,7 +38,7 @@
             <mat-form-field>
               <label for="description">Trait</label>
               <textarea matInput type="textarea" [(ngModel)]="race.trait" class="form-control" id="trait" name="trait"
-                minlength="3" maxlength="512" placeholder="Enter race's trait" required #trait="ngModel"
+                minlength="3" maxlength="512" placeholder="Enter race's trait" noWhitespace #trait="ngModel"
                 [ngClass]="{ 'is-invalid': f.submitted && trait.errors }"></textarea>
               <div class="invalid-feedback" *ngIf="trait.errors && f.submitted">
                 <div *ngIf="trait.errors['required']">Trait is required</div>

@@ -25,7 +25,11 @@ export class Validation {
         const control = formGroup.controls[controlName];
         const checkControl = formGroup.controls[checkControlName];
   
-        if ((!control?.value && (!checkControl?.get('name')?.value || !checkControl?.get('description')?.value || !checkControl?.get('trait')?.value))) {
+        if ((control.value == null)
+           && 
+           ((checkControl?.get('name')?.value == null || (checkControl?.get('name')?.value?.trim() == '')) 
+              || (checkControl?.get('description')?.value == null || (checkControl?.get('description')?.value?.trim() == ''))
+              || (checkControl?.get('trait')?.value == null || (checkControl?.get('trait')?.value?.trim() == '')))) {
           checkControl?.get('name')?.setErrors({ eitherOrRace: {value:true} });
           checkControl?.get('description')?.setErrors({ eitherOrRace: {value:true} });
           checkControl?.get('trait')?.setErrors({ eitherOrRace: {value:true} });
@@ -41,12 +45,40 @@ export class Validation {
       };
     }
 
-    static eitherOrGeneric(controlName: string, checkControlName: string) {
+    static eitherOrGeography(controlName: string, checkControlName: string) {
       return (formGroup: FormGroup) => {
         const control = formGroup.controls[controlName];
         const checkControl = formGroup.controls[checkControlName];
   
-        if ((!control?.value && (!checkControl?.get('name')?.value || !checkControl?.get('description')?.value))) {
+        if ((control.value == null)
+           && 
+           ((checkControl?.get('name')?.value == null || (checkControl?.get('name')?.value?.trim() == '')) 
+              || (checkControl?.get('description')?.value == null || (checkControl?.get('description')?.value?.trim() == ''))
+              || (checkControl?.get('type')?.value == null || (checkControl?.get('type')?.value?.trim() == '')))) {
+          checkControl?.get('name')?.setErrors({ eitherOrGeography: {value:true} });
+          checkControl?.get('description')?.setErrors({ eitherOrGeography: {value:true} });
+          checkControl?.get('type')?.setErrors({ eitherOrGeography: {value:true} });
+          control?.setErrors({ eitherOrGeography: {value:true} });
+          return { eitherOrGeography: {value:true} };
+        } else {
+          checkControl?.get('name')?.setErrors(null);
+          checkControl?.get('description')?.setErrors(null);
+          checkControl?.get('type')?.setErrors(null);
+          control?.setErrors(null);
+          return null;
+        }
+      };
+    }
+
+    static eitherOrGeneric(controlName: string, checkControlName: string) {
+      return (formGroup: FormGroup) => {
+        const control = formGroup.controls[controlName];
+        const checkControl = formGroup.controls[checkControlName];
+        
+        if ((control.value == null || control.value?.trim() == '')
+        && 
+           ((checkControl?.get('name')?.value == null || (checkControl?.get('name')?.value?.trim() == '')) 
+           || (checkControl?.get('description')?.value == null || (checkControl?.get('description')?.value?.trim() == '')))) {
           checkControl?.get('name')?.setErrors({ eitherOr: {value:true} });
           checkControl?.get('description')?.setErrors({ eitherOr: {value:true} });
           control?.setErrors({ eitherOr: {value:true} });
@@ -83,15 +115,15 @@ export class Validation {
         const checkControl = Boolean(check);
   
         if (checkControl) {
-          if(!control?.get('name')?.value && !control?.get('description')?.value) {
+          if((!control?.get('name')?.value || (control?.get('name')?.value.trim() == '')) && (!control?.get('description')?.value || (control?.get('description')?.value.trim() == ''))) {
             control?.get('name')?.setErrors({ requiredIf: {value:true} });
             control?.get('description')?.setErrors({ requiredIf: {value:true} });
             return { requiredIf: {value:true} };
-          } else if (!control?.get('name')?.value) {
+          } else if ((!control?.get('name')?.value || (control?.get('name')?.value.trim() == ''))) {
             control?.get('description')?.setErrors(null);
             control?.get('name')?.setErrors({ requiredIf: {value:true} });
             return { requiredIf: {value:true} };
-          } else if (!control?.get('description')?.value) {
+          } else if ((!control?.get('description')?.value || (control?.get('description')?.value.trim() == ''))) {
             control?.get('name')?.setErrors(null);
             control?.get('description')?.setErrors({ requiredIf: {value:true} });
             return { requiredIf: {value:true} };
@@ -108,4 +140,59 @@ export class Validation {
       };
     }
     
+    static requiredIfPoliticalSystem(controlName: string|boolean, check: string|boolean) {
+      return (formGroup: FormGroup) => {
+        const control = formGroup.controls[String(controlName)];
+        const checkControl = Boolean(check);
+  
+        if (checkControl) {
+          if ((!control?.get('name')?.value || (control?.get('name')?.value.trim() == '')) && (!control?.get('description')?.value || (control?.get('description')?.value.trim() == '')) && (!control?.get('type')?.value || (control?.get('type')?.value.trim() == ''))) {
+            control?.get('name')?.setErrors({ requiredIf: {value:true} });
+            control?.get('description')?.setErrors({ requiredIf: {value:true} });
+            control?.get('type')?.setErrors({ requiredIf: {value:true} });
+            return { requiredIf: {value:true} };
+          } else if((!control?.get('name')?.value || (control?.get('name')?.value.trim() == '')) && (!control?.get('description')?.value || (control?.get('description')?.value.trim() == ''))) {
+            control?.get('name')?.setErrors({ requiredIf: {value:true} });
+            control?.get('description')?.setErrors({ requiredIf: {value:true} });
+            control?.get('type')?.setErrors({ requiredIf: {value:true} });
+            return { requiredIf: {value:true} };
+          } else if((!control?.get('name')?.value || (control?.get('name')?.value.trim() == '')) && (!control?.get('type')?.value || (control?.get('type')?.value.trim() == ''))) {
+            control?.get('name')?.setErrors({ requiredIf: {value:true} });
+            control?.get('description')?.setErrors({ requiredIf: {value:true} });
+            control?.get('type')?.setErrors({ requiredIf: {value:true} });
+            return { requiredIf: {value:true} };
+          } else if((!control?.get('type')?.value || (control?.get('type')?.value.trim() == '')) && (!control?.get('description')?.value || (control?.get('description')?.value.trim() == ''))) {
+            control?.get('name')?.setErrors({ requiredIf: {value:true} });
+            control?.get('description')?.setErrors({ requiredIf: {value:true} });
+            control?.get('type')?.setErrors({ requiredIf: {value:true} });
+            return { requiredIf: {value:true} };
+          } else if ((!control?.get('name')?.value || (control?.get('name')?.value.trim() == ''))) {
+            control?.get('description')?.setErrors(null);
+            control?.get('name')?.setErrors({ requiredIf: {value:true} });
+            control?.get('type')?.setErrors({ requiredIf: {value:true} });
+            return { requiredIf: {value:true} };
+          } else if ((!control?.get('description')?.value || (control?.get('description')?.value.trim() == ''))) {
+            control?.get('name')?.setErrors(null);
+            control?.get('description')?.setErrors({ requiredIf: {value:true} });
+            control?.get('type')?.setErrors({ requiredIf: {value:true} });
+            return { requiredIf: {value:true} };
+          } else if ((!control?.get('type')?.value || (control?.get('type')?.value.trim() == ''))) {
+            control?.get('name')?.setErrors(null);
+            control?.get('description')?.setErrors({ requiredIf: {value:true} });
+            control?.get('type')?.setErrors({ requiredIf: {value:true} });
+            return { requiredIf: {value:true} };
+          } else {
+            control?.get('name')?.setErrors(null);
+            control?.get('description')?.setErrors(null);
+            control?.get('type')?.setErrors(null);
+            return null;
+          }
+        } else {
+          control?.get('name')?.setErrors(null);
+          control?.get('description')?.setErrors(null);
+          control?.get('type')?.setErrors(null);
+          return null;
+        }
+      };
+    }
   }

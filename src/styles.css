@@ -6,6 +6,10 @@ div.form-group > button, div.form-group > a > button, mat-form-field > button, m
     margin: 5px;
 }
 
+.mat-mdc-form-field-error-wrapper {
+  padding: 0 !important;
+}
+
 .wb-alert-success .mat-mdc-snack-bar-label .mdc-snackbar__label {
   color : green;
 }
@@ -25,6 +29,7 @@ button {
 
 form table, mat-card-title, button[type=submit] {
   margin: 0 auto !important;
+  margin-top: 15px !important;
 }
 mat-card-title, button[type=submit] {
   display: block;

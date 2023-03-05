@@ -12,7 +12,7 @@
             <mat-form-field>
               <label for="name">Name</label>
               <input matInput type="text" [(ngModel)]="world.name" class="form-control" id="name" name="name"
-                minlength="3" maxlength="64" placeholder="Enter world's name" required #name="ngModel"
+                minlength="3" maxlength="64" placeholder="Enter world's name" noWhitespace #name="ngModel"
                 [ngClass]="{ 'is-invalid': f.submitted && name.errors }">
               <div class="invalid-feedback" *ngIf="f.submitted && name.errors">
                 <div *ngIf="name.errors['required']">Name is required</div>
@@ -27,7 +27,7 @@
             <mat-form-field>
               <label for="description">Description</label>
               <textarea matInput type="textarea" [(ngModel)]="world.description" class="form-control" id="description"
-                name="description" minlength="3" maxlength="1024" placeholder="Enter world's description" required
+                name="description" minlength="3" maxlength="1024" placeholder="Enter world's description" noWhitespace
                 #description="ngModel" [ngClass]="{ 'is-invalid': f.submitted && description.errors }"></textarea>
               <div class="invalid-feedback" *ngIf="description.errors && f.submitted">
                 <div *ngIf="description.errors['required']">Description is required</div>

@@ -68,9 +68,9 @@ export class ReligionFormComponent {
               name: this.religion.name,
               description: this.religion.description
             });
-          }, error: actorErr => {
+          }, error: err => {
             this.loading = false;
-            this.alertService.error("Error retrieving actor: " + actorErr.error.error);
+            this.alertService.error("Error retrieving religion: " + err.error.error);
         }
       });
     } 
@@ -79,8 +79,8 @@ export class ReligionFormComponent {
   async onSubmit() {
     if (this.form.valid) {
       this.loading = true;
-      const name = this.form.controls.name.value || '';
-      const description = this.form.controls.description.value || '';
+      const name = this.form.controls.name.value?.trim() || '';
+      const description = this.form.controls.description.value?.trim() || '';
       this.religion = {
         name: name,
         description: description,
@@ -94,13 +94,13 @@ export class ReligionFormComponent {
       observe.subscribe({
           next: result => {
             this.loading = false;
-            const message = this.isAddMode ? 'Actor saved successfully!' : 'Actor updated successfully!';
+            const message = this.isAddMode ? 'Religion saved successfully!' : 'Religion updated successfully!';
             this.alertService.success(message);
             this.gotoRedirect();
           },
           error: err => {
             this.loading = false;
-            const message = this.isAddMode ? 'Error creating actor: ' : 'Error updating actor: ';
+            const message = this.isAddMode ? 'Error creating Religion: ' : 'Error updating Religion: ';
             this.alertService.error(message + err.error.error);
           }
         });

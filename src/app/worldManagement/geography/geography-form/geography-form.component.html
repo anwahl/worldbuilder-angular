@@ -1,0 +1,118 @@
+<div class="col-md-12">
+    <mat-card>
+      <form [formGroup]="form">
+        <table>
+          <tr>
+            <td>
+              <mat-card-header><mat-card-title>{{ isAddMode ? 'Create New Geography' : 'Update ' + geography.name }}</mat-card-title></mat-card-header>
+            </td>
+          </tr>
+          <tr>
+            <td>
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input matInput type="text" name="name" placeholder="Enter geography's name" formControlName="name" #name>
+                    <mat-error *ngIf="form.get('name')?.hasError('required')">Name is required</mat-error>
+                    <mat-error *ngIf="form.get('name')?.hasError('minlength')">Name must be at least 3 characters</mat-error>
+                    <mat-error *ngIf="form.get('name')?.hasError('maxlength')">Name must be at most 64 characters</mat-error>
+                </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field>
+                <mat-label>Description</mat-label>
+                <textarea matInput name="description" placeholder="Enter geography's description" #description formControlName="description"></textarea>
+                  <mat-error *ngIf="form.get('description')?.hasError('required')">Description is required</mat-error>
+                  <mat-error *ngIf="form.get('description')?.hasError('minlength')">Description be at least 3 characters</mat-error>
+                  <mat-error *ngIf="form.get('description')?.hasError('maxlength')">Description be at most 1024 characters</mat-error>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+                <mat-form-field >
+                    <mat-label>Type</mat-label>
+                    <mat-select name="type" required #type formControlName="type">
+                        <mat-option *ngFor="let type of types" [value]="type">
+                            {{((type[0].toUpperCase() + type.substr(1).toLowerCase()).replaceAll('_',' '))}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form.get('type')?.hasError('required')">Type is required</mat-error>
+                </mat-form-field>
+            </td>
+        </tr>
+        <tr>
+          <td>
+              <mat-form-field >
+                  <mat-label>Climate</mat-label>
+                  <mat-select name="climate" #climate formControlName="climate">
+                      <mat-option></mat-option>
+                      <mat-option *ngFor="let climate of climates" [value]="climate">
+                          {{((climate[0].toUpperCase() + climate.substr(1).toLowerCase()).replaceAll('_',' ')).replace('climate','')}}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </td>
+      </tr>
+      <tr>
+        <td>
+            <mat-form-field >
+                <mat-label>Parent Geography</mat-label>
+                <mat-select name="parentGeography" #parentGeography formControlName="parentGeography">
+                    <mat-option *ngFor="let parentGeography of geographies" [value]="parentGeography.id">
+                        {{parentGeography.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </td>
+    </tr>
+      <mat-divider></mat-divider>
+            <h5>Resources</h5>
+            <tr>
+                <mat-form-field>
+                    <mat-label>Resources</mat-label>
+                    <mat-select name="resources" #resources [compareWith]="compareObjects" formControlName="resources" multiple>
+                        <mat-option *ngFor="let resource of resourcesList" [value]="resource">
+                            {{resource.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </tr>
+            <tr *ngFor="let control of resourcesFieldAsFormArray.controls ;let i = index;" formArrayName='newResources' >
+                <span [formGroupName]="i">
+                    <td>
+                        <mat-form-field>
+                            <mat-label>Name</mat-label>
+                            <input matInput type="text" name="name" placeholder="Enter resource's name" formControlName="name" #name>
+                            <mat-error *ngIf="control.get('name')?.hasError('required')">Name is required</mat-error>
+                            <mat-error *ngIf="control.get('name')?.hasError('minlength')">Name must be at least 3 characters</mat-error>
+                            <mat-error *ngIf="control.get('name')?.hasError('maxlength')">Name must be at most 64 characters</mat-error>
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field>
+                            <mat-label>Description</mat-label>
+                            <textarea matInput type="text" name="description" placeholder="Enter resource's description" formControlName="description" #description></textarea>
+                            <mat-error *ngIf="control.get('description')?.hasError('required')">Description is required</mat-error>
+                            <mat-error *ngIf="control.get('description')?.hasError('minlength')">Description must be at least 3 characters</mat-error>
+                            <mat-error *ngIf="control.get('description')?.hasError('maxlength')">Description must be at most 1024 characters</mat-error>
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <button mat-raised-button color="primary" (click)="removeResource(i)">Remove</button>
+                    </td>
+                </span>
+            </tr>
+            <tr>
+                <button mat-raised-button color="primary" (click)="addResource()">Add New Resource</button>
+            </tr>
+            <mat-divider></mat-divider>
+        </table>
+        <div class="form-group">
+          <button mat-raised-button color="accent" (click)="onSubmit()" type="submit">Submit</button>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+  <ngx-loading [show]="loading"></ngx-loading>

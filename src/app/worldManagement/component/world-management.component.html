@@ -22,6 +22,22 @@
       <mat-icon>list</mat-icon>
       <span>Religions</span>
     </button>
+    <button mat-menu-item [routerLink]="['regions']">
+      <mat-icon>list</mat-icon>
+      <span>Regions</span>
+    </button>
+    <button mat-menu-item [routerLink]="['politicalSystems']">
+      <mat-icon>list</mat-icon>
+      <span>Political Systems</span>
+    </button>
+    <button mat-menu-item [routerLink]="['geographies']">
+      <mat-icon>list</mat-icon>
+      <span>Geographies</span>
+    </button>
+    <button mat-menu-item [routerLink]="['socialClasses']">
+      <mat-icon>list</mat-icon>
+      <span>Social Classes</span>
+    </button>
   </mat-menu>
 </mat-toolbar>
 <router-outlet></router-outlet>
