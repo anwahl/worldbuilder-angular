@@ -98,7 +98,7 @@ export class RaceListComponent {
           this.ds.sort = this.sort;
           this.ds.paginator = this.paginator;
         }, err => { 
-          this.alertService.error('Race ' + race.name + ' could not deleted. Reason: ' + err);
+          this.alertService.error('Race ' + race.name + ' could not deleted. Reason: ' + err.error);
         });
   }
 }

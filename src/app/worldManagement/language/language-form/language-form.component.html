@@ -1,0 +1,39 @@
+<div class="col-md-12">
+    <mat-card>
+      <form [formGroup]="form">
+        <table>
+        <tr>
+            <td>
+                <mat-card-header><mat-card-title>{{ isAddMode ? 'Create New Language' : 'Update ' + language.name }}</mat-card-title></mat-card-header>
+            </td>
+        </tr>
+          <tr>
+            <td>
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input matInput type="text" name="name" placeholder="Enter language's name" formControlName="name" #name noWhitespace>
+                    <mat-error *ngIf="form.get('name')?.hasError('required')">Name is required</mat-error>
+                    <mat-error *ngIf="form.get('name')?.hasError('minlength')">Name must be at least 3 characters</mat-error>
+                    <mat-error *ngIf="form.get('name')?.hasError('maxlength')">Name must be at most 64 characters</mat-error>
+                </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field>
+                <mat-label>Description</mat-label>
+                <textarea matInput name="description" placeholder="Enter language's description" #description formControlName="description" noWhitespace></textarea>
+                  <mat-error *ngIf="form.get('description')?.hasError('required')">Description is required</mat-error>
+                  <mat-error *ngIf="form.get('description')?.hasError('minlength')">Description be at least 3 characters</mat-error>
+                  <mat-error *ngIf="form.get('description')?.hasError('maxlength')">Description be at most 1024 characters</mat-error>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+        <div class="form-group">
+          <button mat-raised-button color="accent" (click)="onSubmit()" type="submit">Submit</button>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+  <ngx-loading [show]="loading"></ngx-loading>

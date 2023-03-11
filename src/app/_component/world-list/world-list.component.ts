@@ -116,7 +116,7 @@ export class WorldListComponent implements OnInit {
           this.ds.sort = this.sort;
           this.ds.paginator = this.paginator;
         }, err => { 
-          this.alertService.error('World ' + world.name + ' could not deleted. Reason: ' + err);
+          this.alertService.error('World ' + world.name + ' could not deleted. Reason: ' + err.error);
         });
   }
 

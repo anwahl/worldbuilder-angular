@@ -1,0 +1,65 @@
+<mat-card>
+    <mat-card-content>
+      <a [routerLink]="['../geography']" mat-raised-button color="accent">Create Geography</a>
+      <mat-card-header><mat-card-title>Geographies</mat-card-title></mat-card-header>
+  
+      <div class="list-table-container mat-elevation-z8">
+        <mat-table matSort [dataSource]="ds">
+          <ng-container matColumnDef="update">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let geography" data-label="update"><a
+                [routerLink]="['../geography', geography.id]"><mat-icon>edit</mat-icon></a></mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <mat-header-cell mat-sort-header *matHeaderCellDef>Name </mat-header-cell>
+            <mat-cell *matCellDef="let geography" data-label="name">{{ geography.name }} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="description">
+            <mat-header-cell mat-sort-header *matHeaderCellDef> Description </mat-header-cell>
+            <mat-cell *matCellDef="let geography" data-label="description"><span (click)='showContent(geography.description)'
+                class="ellipsis">{{ geography.description }}</span></mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="type">
+            <mat-header-cell mat-sort-header *matHeaderCellDef>Type </mat-header-cell>
+            <mat-cell *matCellDef="let geography" data-label="type">{{ ((geography.type[0].toUpperCase() + geography.type.substr(1).toLowerCase()).replaceAll('_',' '))}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="climate">
+            <mat-header-cell mat-sort-header *matHeaderCellDef>Climate </mat-header-cell>
+            <mat-cell *matCellDef="let geography" data-label="climate">{{ ((geography.climate[0].toUpperCase() + geography.climate.substr(1).toLowerCase()).replaceAll('_',' ')).replace('climate','') }} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="resources">
+            <mat-header-cell mat-sort-header *matHeaderCellDef>Resources </mat-header-cell>
+            <mat-cell *matCellDef="let geography" data-label="resources"><span class="ellipsis" (click)='showResources(geography.resources)' *ngFor="let resource of geography.resources; let i = index">{{ resource.name }}{{ i != geography.resources.length-1 ? ',&nbsp;' : '' }}</span></mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="parentGeography">
+            <mat-header-cell mat-sort-header *matHeaderCellDef>Parent Geography </mat-header-cell>
+            <mat-cell *matCellDef="let geography" data-label="parent geography">{{ geography.parentGeography?.name }} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="delete">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let geography" data-label="delete">
+              <button (click)="deleteConfirm(geography)" mat-icon-button type="button" aria-label="Delete">
+                <mat-icon (click)="deleteConfirm(geography)">delete</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+          <mat-row *matRowDef="let geography; columns: columnsToDisplay"></mat-row>
+        </mat-table>
+        <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page">
+        </mat-paginator>
+      </div>
+    </mat-card-content>
+    </mat-card>
+    <wb-modal id="deleteGeographyConfirm">
+      <h1>Are you Sure?</h1>
+      <p>Do you wish to delete this geography?</p>
+      <button (click)="deleteGeography(geographyToDelete)">Delete</button>
+      <button (click)="closeModal();">Close</button>
+    </wb-modal>
+    <wb-modal id="showGeographyContent">
+      <p>{{ content }}</p>
+      <button (click)="closeModal();">Close</button>
+    </wb-modal>
+    <ngx-loading [show]="loading">
+    </ngx-loading>

@@ -6,9 +6,37 @@
   <span [routerLink]="['./']" >{{ worldName }}</span>
   <span style="flex: 1 1 auto;"></span>
   <mat-menu #worldManagementMenu="matMenu">
+    <button mat-menu-item [routerLink]="['actors']">
+      <mat-icon>list</mat-icon>
+      <span>Actors</span>
+    </button>
     <button mat-menu-item [routerLink]="['races']">
       <mat-icon>list</mat-icon>
       <span>Races</span>
+    </button>
+    <button mat-menu-item [routerLink]="['languages']">
+      <mat-icon>list</mat-icon>
+      <span>Languages</span>
+    </button>
+    <button mat-menu-item [routerLink]="['religions']">
+      <mat-icon>list</mat-icon>
+      <span>Religions</span>
+    </button>
+    <button mat-menu-item [routerLink]="['regions']">
+      <mat-icon>list</mat-icon>
+      <span>Regions</span>
+    </button>
+    <button mat-menu-item [routerLink]="['politicalSystems']">
+      <mat-icon>list</mat-icon>
+      <span>Political Systems</span>
+    </button>
+    <button mat-menu-item [routerLink]="['geographies']">
+      <mat-icon>list</mat-icon>
+      <span>Geographies</span>
+    </button>
+    <button mat-menu-item [routerLink]="['socialClasses']">
+      <mat-icon>list</mat-icon>
+      <span>Social Classes</span>
     </button>
   </mat-menu>
 </mat-toolbar>

@@ -34,6 +34,8 @@ export class UserProfileComponent {
 
   onChangeEmail(): void {
     this.loading = true;
+    this.profile.confirmEmail = this.profile.confirmEmail.trim();
+    this.profile.email = this.profile.email.trim();
     this.userService.changeEmail(this.profile).subscribe({
       next: data => {
         this.loading = false;
@@ -48,6 +50,9 @@ export class UserProfileComponent {
 
   onChangePassword(): void {
     this.loading = true;
+    this.profile.newPassword = this.profile.newPassword.trim();
+    this.profile.oldPassword = this.profile.oldPassword.trim();
+    this.profile.confirmPassword = this.profile.confirmPassword.trim();
     this.authService.changePassword(this.profile).subscribe({
       next: data => {
         this.loading = false;

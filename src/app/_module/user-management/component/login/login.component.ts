@@ -35,8 +35,9 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     this.loading = true;
+    this.form.password = this.form.password.trim();
+    this.form.username = this.form.username.trim();
     const { username, password } = this.form;
-
     this.authService.login(username, password).subscribe({
       next: data => {
         this.loading = false;

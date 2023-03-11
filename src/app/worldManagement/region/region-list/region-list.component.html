@@ -1,0 +1,65 @@
+<mat-card>
+    <mat-card-content>
+      <a [routerLink]="['../region']" mat-raised-button color="accent">Create Region</a>
+      <mat-card-header><mat-card-title>Regions</mat-card-title></mat-card-header>
+  
+      <div class="list-table-container mat-elevation-z8">
+        <mat-table matSort [dataSource]="ds">
+          <ng-container matColumnDef="update">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let region" data-label="update"><a
+                [routerLink]="['../region', region.id]"><mat-icon>edit</mat-icon></a></mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <mat-header-cell mat-sort-header *matHeaderCellDef>Name </mat-header-cell>
+            <mat-cell *matCellDef="let region" data-label="name">{{ region.name }} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="description">
+            <mat-header-cell mat-sort-header *matHeaderCellDef> Description </mat-header-cell>
+            <mat-cell *matCellDef="let region" data-label="description"><span (click)='showContent(region.description)'
+                class="ellipsis">{{ region.description }}</span></mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="delete">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let region" data-label="delete">
+              <button (click)="deleteConfirm(region)" mat-icon-button type="button" aria-label="Delete">
+                <mat-icon (click)="deleteConfirm(region)">delete</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="municipality">
+            <mat-header-cell mat-sort-header *matHeaderCellDef>Municipality </mat-header-cell>
+            <mat-cell *matCellDef="let region" data-label="municipality">{{ region.municipality[0].toUpperCase() + region.municipality.substr(1).toLowerCase() }} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="jurisdiction">
+            <mat-header-cell mat-sort-header *matHeaderCellDef>Jurisdiction </mat-header-cell>
+            <mat-cell *matCellDef="let region" data-label="jurisdiction">{{ region.jurisdiction?.name }} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="geography">
+            <mat-header-cell mat-sort-header *matHeaderCellDef>Geography </mat-header-cell>
+            <mat-cell *matCellDef="let region" data-label="geography">{{ region.geography.name }} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="politicalSystem">
+            <mat-header-cell mat-sort-header *matHeaderCellDef>Political System </mat-header-cell>
+            <mat-cell *matCellDef="let region" data-label="political system">{{ region.politicalSystem?.name }} </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+          <mat-row *matRowDef="let region; columns: columnsToDisplay"></mat-row>
+        </mat-table>
+        <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page">
+        </mat-paginator>
+      </div>
+    </mat-card-content>
+    </mat-card>
+    <wb-modal id="deleteRegionConfirm">
+      <h1>Are you Sure?</h1>
+      <p>Do you wish to delete this region?</p>
+      <button (click)="deleteRegion(regionToDelete)">Delete</button>
+      <button (click)="closeModal();">Close</button>
+    </wb-modal>
+    <wb-modal id="showRegionContent">
+      <p>{{ content }}</p>
+      <button (click)="closeModal();">Close</button>
+    </wb-modal>
+    <ngx-loading [show]="loading">
+    </ngx-loading>
