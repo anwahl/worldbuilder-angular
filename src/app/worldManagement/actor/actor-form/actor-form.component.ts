@@ -10,10 +10,14 @@ import { RaceService } from '../../race/service/race.service';
 import { WorldStorageService } from '../../service/world-storage.service';
 import { ActorService } from '../service/actor.service';
 import { forkJoin, switchMap, Observable } from 'rxjs';
+import { of, map, lastValueFrom } from 'rxjs';
 import { LanguageService } from '../../language/service/language.service';
 import { Religion } from '../../model/religion';
 import { ReligionService } from '../../religion/service/religion.service';
-import { of } from 'rxjs';
+import { SocialClass } from '../../model/social-class';
+import { SocialClassService } from '../../socialClass/service/social-class.service';
+import { RegionService } from '../../region/service/region.service';
+import { Region } from '../../model/region';
 
 
 @Component({
@@ -30,14 +34,15 @@ export class ActorFormComponent {
   public loading = false;
   redirectUrl: string | undefined;
   races: Array<Race>;
-  race: Race;
   createRace = false;
   religions: Array<Religion>;
-  religion: Religion;
   createReligion = false;
+  socialClasses: Array<SocialClass>;
+  createSocialClass = false;
   languagesList: Array<Language>;
   newLanguages: any[] = [];
   languages: Array<Language> = [];
+  regions: Array<Region>;
 
   form = this.formBuilder.group({
     firstName: ['', {
@@ -107,6 +112,25 @@ export class ActorFormComponent {
             updateOn: 'blur'
         }],
       }),
+      socialClass: ['', [] ],
+      newSocialClass: this.formBuilder.group({
+          name: ['', {
+            validators: [
+              Validators.minLength(3),
+              Validators.maxLength(64)
+            ],
+            updateOn: 'blur'
+        }],
+          description: ['', {
+            validators: [
+              Validators.minLength(3),
+              Validators.maxLength(1024)
+            ],
+            updateOn: 'blur'
+        }],
+        region: [''],
+        race: ['']
+      }),
  });
 
 
@@ -119,7 +143,9 @@ export class ActorFormComponent {
         private worldStorage: WorldStorageService,
         private raceService: RaceService,
         private religionService: ReligionService,
-        private languageService: LanguageService) {
+        private socialClassService: SocialClassService,
+        private languageService: LanguageService,
+        private regionService: RegionService) {
     
     this.redirectUrl = this.router.getCurrentNavigation()?.previousNavigation?.finalUrl?.toString();
   }
@@ -138,7 +164,9 @@ export class ActorFormComponent {
           const observables = {
             races: this.raceService.findByWorld(this.worldStorage.getWorld()),
             religions: this.religionService.findByWorld(this.worldStorage.getWorld()),
-            languages: this.languageService.findByWorld(this.worldStorage.getWorld())
+            socialClasses: this.socialClassService.findByWorld(this.worldStorage.getWorld()),
+            languages: this.languageService.findByWorld(this.worldStorage.getWorld()),
+            regions: this.regionService.findByWorld(this.worldStorage.getWorld())
           };
           const results = forkJoin(observables);
           results.subscribe(data => {
@@ -146,6 +174,8 @@ export class ActorFormComponent {
             this.races = data.races;
             this.religions = data.religions;
             this.languagesList = data.languages;
+            this.socialClasses = data.socialClasses;
+            this.regions = data.regions;
           });
           this.actor = actorData;
           this.form.patchValue({
@@ -154,7 +184,8 @@ export class ActorFormComponent {
             description: this.actor.description,
             race: this.actor.race?.id,
             languages: this.actor.languages,
-            religion: this.actor.religion?.id
+            religion: this.actor.religion?.id,
+            socialClass: this.actor.socialClass?.id
           });
 
         },
@@ -167,13 +198,17 @@ export class ActorFormComponent {
       this.loading = true;
       const observables = {races: this.raceService.findByWorld(this.worldStorage.getWorld()),
                            religions: this.religionService.findByWorld(this.worldStorage.getWorld()),
-                           languages: this.languageService.findByWorld(this.worldStorage.getWorld()) };
+                           languages: this.languageService.findByWorld(this.worldStorage.getWorld()),
+                           socialClasses: this.socialClassService.findByWorld(this.worldStorage.getWorld()),
+                           regions: this.regionService.findByWorld(this.worldStorage.getWorld()) };
       const results = forkJoin(observables);
       results.subscribe(data => {
           this.loading = false;
           this.races = data.races;
           this.religions = data.religions;
           this.languagesList = data.languages;
+          this.socialClasses = data.socialClasses;
+          this.regions = data.regions;
       });
     }
   }
@@ -186,6 +221,7 @@ export class ActorFormComponent {
       const description = this.form.controls.description.value?.trim() || '';
       const race = this.createRace ? this.getRace() : null;
       const religion = this.createReligion ? this.getReligion() : null;
+      const socialClass = this.createSocialClass ? await this.getSocialClass() : null;
       this.actor = {
         firstName: firstName,
         lastName: lastName,
@@ -196,14 +232,17 @@ export class ActorFormComponent {
     
       const raceAction = race ? this.raceService.create(race) : this.raceService.findById(this.form.controls.race.value || '');
       const religionAction = religion ? this.religionService.create(religion) : (this.form.controls.religion.value ? this.religionService.findById(this.form.controls.religion.value) : of(new Religion()));
+      const socialClassAction = socialClass ? this.socialClassService.create(socialClass) : (this.form.controls.socialClass.value ? this.socialClassService.findById(this.form.controls.socialClass.value) : of(new SocialClass()));
       const observables = {race: raceAction,
-                          religion: religionAction};
+                          religion: religionAction,
+                          socialClass: socialClassAction};
       const results = forkJoin(observables);
-      await this.createLanguages().then(res => {  
+      await this.createLanguages().then(res => {
         results.pipe(
           switchMap(result => {
             this.actor.race = result.race;
             this.actor.religion = (Number(result.religion.id) > 0 ? result.religion : undefined);
+            this.actor.socialClass = (Number(result.socialClass.id) > 0 ? result.socialClass : undefined);
             this.actor.languages = this.languages;
             if (this.isAddMode) {
               return this.actorService.create(this.actor);
@@ -257,6 +296,32 @@ export class ActorFormComponent {
     religion.name = this.form.controls.newReligion.controls.name.value?.trim() || '';
     religion.world = this.worldStorage.getWorld();
     return religion;
+  }
+
+  async getSocialClass() {
+    const socialClass = new SocialClass();
+    socialClass.description = this.form.controls.newSocialClass.controls.description.value?.trim() || '';
+    socialClass.name = this.form.controls.newSocialClass.controls.name.value?.trim() || '';
+    socialClass.world = this.worldStorage.getWorld();
+
+    const regionAction = this.form.controls.newSocialClass.controls.region.value
+      ? this.regionService.findById(this.form.controls.newSocialClass.controls.region.value)
+      : of(new Region());
+    const raceACtion = this.form.controls.newSocialClass.controls.race.value
+    ? this.raceService.findById(this.form.controls.newSocialClass.controls.race.value)
+    : of(new Race());
+    const observables = {race: raceACtion,
+                         region: regionAction};
+    const results = forkJoin(observables);
+    const res = await lastValueFrom(results.pipe(
+      map(res => {
+        socialClass.region = Number(res.region.id) > 0 ? res.region : undefined;
+        socialClass.race = Number(res.race.id) > 0 ? res.race : undefined;
+        return socialClass;
+      })
+    ));
+
+    return res;
   }
 
   async createLanguages() {

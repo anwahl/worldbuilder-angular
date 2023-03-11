@@ -24,8 +24,8 @@ export class Validation {
       return (formGroup: FormGroup) => {
         const control = formGroup.controls[controlName];
         const checkControl = formGroup.controls[checkControlName];
-  
-        if ((control.value == null)
+        
+        if ((!control.value)
            && 
            ((checkControl?.get('name')?.value == null || (checkControl?.get('name')?.value?.trim() == '')) 
               || (checkControl?.get('description')?.value == null || (checkControl?.get('description')?.value?.trim() == ''))
@@ -50,7 +50,7 @@ export class Validation {
         const control = formGroup.controls[controlName];
         const checkControl = formGroup.controls[checkControlName];
   
-        if ((control.value == null)
+        if ((!control.value)
            && 
            ((checkControl?.get('name')?.value == null || (checkControl?.get('name')?.value?.trim() == '')) 
               || (checkControl?.get('description')?.value == null || (checkControl?.get('description')?.value?.trim() == ''))
@@ -75,7 +75,7 @@ export class Validation {
         const control = formGroup.controls[controlName];
         const checkControl = formGroup.controls[checkControlName];
         
-        if ((control.value == null || control.value?.trim() == '')
+        if ((!control.value)
         && 
            ((checkControl?.get('name')?.value == null || (checkControl?.get('name')?.value?.trim() == '')) 
            || (checkControl?.get('description')?.value == null || (checkControl?.get('description')?.value?.trim() == '')))) {

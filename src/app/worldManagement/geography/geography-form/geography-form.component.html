@@ -11,7 +11,7 @@
             <td>
                 <mat-form-field>
                     <mat-label>Name</mat-label>
-                    <input matInput type="text" name="name" placeholder="Enter geography's name" formControlName="name" #name>
+                    <input matInput type="text" name="name" placeholder="Enter geography's name" formControlName="name" #name noWhitespace>
                     <mat-error *ngIf="form.get('name')?.hasError('required')">Name is required</mat-error>
                     <mat-error *ngIf="form.get('name')?.hasError('minlength')">Name must be at least 3 characters</mat-error>
                     <mat-error *ngIf="form.get('name')?.hasError('maxlength')">Name must be at most 64 characters</mat-error>
@@ -22,7 +22,7 @@
             <td>
               <mat-form-field>
                 <mat-label>Description</mat-label>
-                <textarea matInput name="description" placeholder="Enter geography's description" #description formControlName="description"></textarea>
+                <textarea matInput name="description" placeholder="Enter geography's description" #description formControlName="description" noWhitespace></textarea>
                   <mat-error *ngIf="form.get('description')?.hasError('required')">Description is required</mat-error>
                   <mat-error *ngIf="form.get('description')?.hasError('minlength')">Description be at least 3 characters</mat-error>
                   <mat-error *ngIf="form.get('description')?.hasError('maxlength')">Description be at most 1024 characters</mat-error>
@@ -84,7 +84,7 @@
                     <td>
                         <mat-form-field>
                             <mat-label>Name</mat-label>
-                            <input matInput type="text" name="name" placeholder="Enter resource's name" formControlName="name" #name>
+                            <input matInput type="text" name="name" placeholder="Enter resource's name" formControlName="name" #name noWhitespace>
                             <mat-error *ngIf="control.get('name')?.hasError('required')">Name is required</mat-error>
                             <mat-error *ngIf="control.get('name')?.hasError('minlength')">Name must be at least 3 characters</mat-error>
                             <mat-error *ngIf="control.get('name')?.hasError('maxlength')">Name must be at most 64 characters</mat-error>
@@ -93,7 +93,7 @@
                     <td>
                         <mat-form-field>
                             <mat-label>Description</mat-label>
-                            <textarea matInput type="text" name="description" placeholder="Enter resource's description" formControlName="description" #description></textarea>
+                            <textarea matInput type="text" name="description" placeholder="Enter resource's description" formControlName="description" #description noWhitespace></textarea>
                             <mat-error *ngIf="control.get('description')?.hasError('required')">Description is required</mat-error>
                             <mat-error *ngIf="control.get('description')?.hasError('minlength')">Description must be at least 3 characters</mat-error>
                             <mat-error *ngIf="control.get('description')?.hasError('maxlength')">Description must be at most 1024 characters</mat-error>

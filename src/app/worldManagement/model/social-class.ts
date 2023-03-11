@@ -7,6 +7,6 @@ export class SocialClass {
     world: World;
     name: string;
     description: string;
-    region: Region;
-    race: Race;
+    region?: Region;
+    race?: Race;
 }
